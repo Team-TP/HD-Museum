@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{9F376AA3-1042-4363-95D0-29F2BEFF2CCB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0B8E7B18-2E63-4BAF-8F3A-92AF5D47A38B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD.Station.Museum.Demo", "demo\HD.Station.Museum\HD.Station.Museum.Demo.csproj", "{0DF0164C-6D72-4A67-B247-34A68D79550A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD.Station.Museum.Abstractions", "src\HD.Station.Museum.Abstractions\HD.Station.Museum.Abstractions.csproj", "{5B286ABF-5C79-4CC6-8C86-59DB8F617D54}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD.Station.Museum.Mvc", "src\HD.Station.Museum.Mvc\HD.Station.Museum.Mvc.csproj", "{7169C05E-66A3-47BB-A4FC-260086169615}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD.Station.Museum.Sqlserver", "src\HD.Station.Museum.Sqlserver\HD.Station.Museum.Sqlserver.csproj", "{AD1E2048-9810-4036-8CEF-A250DFDB180C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0DF0164C-6D72-4A67-B247-34A68D79550A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DF0164C-6D72-4A67-B247-34A68D79550A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DF0164C-6D72-4A67-B247-34A68D79550A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DF0164C-6D72-4A67-B247-34A68D79550A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B286ABF-5C79-4CC6-8C86-59DB8F617D54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B286ABF-5C79-4CC6-8C86-59DB8F617D54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B286ABF-5C79-4CC6-8C86-59DB8F617D54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B286ABF-5C79-4CC6-8C86-59DB8F617D54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7169C05E-66A3-47BB-A4FC-260086169615}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7169C05E-66A3-47BB-A4FC-260086169615}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7169C05E-66A3-47BB-A4FC-260086169615}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7169C05E-66A3-47BB-A4FC-260086169615}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD1E2048-9810-4036-8CEF-A250DFDB180C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD1E2048-9810-4036-8CEF-A250DFDB180C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD1E2048-9810-4036-8CEF-A250DFDB180C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD1E2048-9810-4036-8CEF-A250DFDB180C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0DF0164C-6D72-4A67-B247-34A68D79550A} = {9F376AA3-1042-4363-95D0-29F2BEFF2CCB}
+		{5B286ABF-5C79-4CC6-8C86-59DB8F617D54} = {0B8E7B18-2E63-4BAF-8F3A-92AF5D47A38B}
+		{7169C05E-66A3-47BB-A4FC-260086169615} = {0B8E7B18-2E63-4BAF-8F3A-92AF5D47A38B}
+		{AD1E2048-9810-4036-8CEF-A250DFDB180C} = {0B8E7B18-2E63-4BAF-8F3A-92AF5D47A38B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8C9D75CE-4FF6-42A8-B66F-3119E73EF074}
+	EndGlobalSection
+EndGlobal

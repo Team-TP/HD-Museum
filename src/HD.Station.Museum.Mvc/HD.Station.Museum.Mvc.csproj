@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HD.AspNetCore.Mvc.Core" Version="4.1.0-ci*" />
+    <PackageReference Include="HD.Station.WebComponents.Common" Version="4.1.0-ci*" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Features\**\*.cshtml" />
+    <EmbeddedResource Include="wwwroot\**\*.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Features\Museums\Categories\Views\CategoriesPartial.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HD.Station.Museum.Abstractions\HD.Station.Museum.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

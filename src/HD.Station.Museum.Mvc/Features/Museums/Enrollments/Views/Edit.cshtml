@@ -1,0 +1,40 @@
+﻿@model EnrollmentsEditViewModel
+@{
+    ViewData["Title"] = Localizer["Storage Location"];
+    ViewData["SubTitle"] = Localizer["Edit"];
+    var message = ViewBag.Notice as NoticeModel;
+    var path = ViewData["path"] != null ? ViewData["path"] : "";
+    var labelClass = ViewData["labelClass"] != null ? ViewData["labelClass"] : "col-md-3";
+    var fieldClass = ViewData["fieldClass"] != null ? ViewData["fieldClass"] : "col-md-8";
+    var groupClass = ViewData["groupClass"] != null ? ViewData["groupClass"] : "form-group";
+}
+
+<div class="hr-divider">
+    <h3 class="hr-divider-content hr-divider-heading">
+        @ViewData["Title"]
+    </h3>
+</div>
+<div notice-for="message"></div>
+<div class="content col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+    <form name="Edit" id="formEdit" asp-action="Edit" class="form-horizontal" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @{ 
+                Html.RenderPartialAsync("_CreateEditPartial", Model);
+            }
+
+    </form>
+</div>
+
+
+
+@section actions {
+    <div class="modal-actions col-md-offset-3 col-md-9">
+        <button icon-name="action-cancel" name="close" class="btn btn-default" data-dismiss="modal">
+            @Localizer["Close"]
+        </button>
+        <button icon-name="action-save" name="submit" class="btn btn-success" form="formEdit">
+            @Localizer["Edit"]
+        </button>
+    </div>
+}

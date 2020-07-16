@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HD.AspNetCore.DataProtection.DistributedCache" Version="4.1.0-ci*" />
+    <PackageReference Include="HD.AspNetCore.Mvc" Version="4.1.0-ci20200603.1" />
+    <PackageReference Include="HD.Data.SqlServer" Version="4.1.0-ci20190412.1" />
+    <PackageReference Include="HD.AspNetCore.Mvc.TagHelpers" Version="4.1.0-ci20200603.1" />
+    <PackageReference Include="HD.SqlLocalization" Version="4.1.0-ci*" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.1" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\HD.Station.Museum.Mvc\HD.Station.Museum.Mvc.csproj" />
+    <ProjectReference Include="..\..\src\HD.Station.Museum.Sqlserver\HD.Station.Museum.Sqlserver.csproj" />
+  </ItemGroup>
+
+</Project>

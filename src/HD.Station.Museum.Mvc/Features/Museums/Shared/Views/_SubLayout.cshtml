@@ -1,0 +1,79 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<link rel="stylesheet" href="~/css/workflow/workflow.form-control.css" />
+
+<div class="col-md-3 col-lg-2 sidebar p-l-0 p-r-0">
+    <cacheoff vary-by-route="true">
+        <nav class="sidebar-nav m-r-md">
+            <div data-toggle="collapse" data-target="#sidebar-navigator" class="sidebar-header">
+                <a class="sidebar-brand img-responsive" href="../index.html">
+                    <span class="icon icon-database sidebar-brand-icon"></span>
+                    @Localizer["Media Assets"]
+                </a>
+            </div>
+
+            <div id="sidebar-navigator" class="collapse nav-toggleable-md">
+                <div class="hr-divider ">
+                    <h3 class="hr-divider-content hr-divider-heading">
+                        @Localizer["List"]
+                    </h3>
+                </div>
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="nav-header">@Localizer["Asset management"]</li>
+                    <li asp-controller="AssetFilterProfile">
+                        <a asp-controller="AssetFilterProfile" asp-action="Index" asp-route-id="">
+                            <span class="icon"></span>
+                            @Localizer["Asset Filter Profile"]
+                        </a>
+                    </li>
+                    <li asp-controller="AssetType">
+                        <a asp-controller="AssetType" asp-action="Index" asp-route-id="">
+                            <span class="icon"></span>
+                            @Localizer["Asset Type"]
+                        </a>
+                    </li>
+                    <li asp-controller="MimeType">
+                        <a asp-controller="MimeType" asp-action="Index" asp-route-id="">
+                            <span class="icon"></span>
+                            @Localizer["Mime Type"]
+                        </a>
+                    </li>
+                    <li class="nav-header">@Localizer["Storage management"]</li>
+                    <li asp-controller="AccessZone">
+                        <a asp-controller="AccessZone" asp-action="Index" asp-route-id="">
+                            <span class="icon"></span>
+                            @Localizer["Access Zone"]
+                        </a>
+                    </li>
+                    <li asp-controller="StorageLocation">
+                        <a asp-controller="StorageLocation" asp-action="Index" asp-route-id="">
+                            <span class="icon"></span>
+                            @Localizer["Storage Location"]
+                        </a>
+                    </li>
+                </ul>
+                <hr class="visible-xs m-t">
+            </div>
+        </nav>
+    </cacheoff>
+</div>
+
+<div class="col-md-9 col-lg-10 content h-100 p-l-0 p-r-0">
+    <div class="dashhead">
+        <div class="dashhead-titles">
+            <h6 class="dashhead-subtitle">@ViewData["Title"]</h6>
+            <h2 class="dashhead-title">@ViewData["SubTitle"]</h2>
+        </div>
+        <div class="btn-toolbar dashhead-toolbar">
+            @RenderSection("navigation", required: false)
+        </div>
+    </div>
+
+    @RenderBody()
+</div>
+
+@section Scripts {
+    @RenderSection("scripts", required: false)
+}

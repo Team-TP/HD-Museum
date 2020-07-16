@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HD.Data.SqlServer" Version="4.1.0-ci*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HD.Station.Museum.Abstractions\HD.Station.Museum.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

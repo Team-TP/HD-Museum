@@ -1,0 +1,36 @@
+﻿@using System.ComponentModel.DataAnnotations
+@{
+    Layout = "";
+
+}
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">@ViewData["Layout"]</h4>
+    </div>
+    <div class="modal-body" style="display: flex">
+        <div class="content col-lg-10 col-lg-push-1 col-md-12">
+            @RenderBody()
+        </div>
+    </div>
+    <div class="modal-footer">
+        @RenderSection("actions")
+    </div>
+
+<style>
+    @@media only screen and (max-width : 1280px) {
+        .col-lg-push-1 {
+            left: 0%;
+        }
+
+        .col-lg-10 {
+            width: auto;
+        }
+        body{
+            background-color:darkgray;
+        }
+    }
+</style>
+@section Scripts {
+    @RenderSection("scripts", required: false)
+}
