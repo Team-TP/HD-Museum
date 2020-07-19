@@ -33,7 +33,7 @@ namespace HD.Station.Feature.Models
         [Display]
         [GridDisplay]
         public bool Disabled { get; set; }
-        [Display]
+        [Hidden]
         public Guid? ParentId { get; set; }
 
 

@@ -42,7 +42,7 @@
         var dataCate = new kendo.data.HierarchicalDataSource({
             transport: {
                 read: {
-                    url: '@Url.Action("GetCategories", "Categories", new { parentId = Model.Id })',
+                    url: '@Url.Action("GetCategoriesEdit", "Categories", new { parentId = Model.Id })',
                     type: "GET",
                     dataType: "json"
                 }
@@ -57,11 +57,13 @@
 
 
         $("#dropdowntree").kendoDropDownTree({
+            //checkboxes: {
+            //    template: "<input type='checkbox' name='checkedFiles[#= item.id #]' value='true'/>"
+            //},
             dataSource: dataCate,
             dataTextField: "Name",
             dataValueField: "Id",
             loadOnDemand: false,
-            ParentId: "ParentId",
         });
 
     })

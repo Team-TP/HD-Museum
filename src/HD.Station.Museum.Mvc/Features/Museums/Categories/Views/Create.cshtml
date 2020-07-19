@@ -14,14 +14,15 @@
 <div notice-for="message"></div>
 
 <div class="content col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
-    <form name="Create" id="formCreate" asp-action="Create" class="form-horizontal">
+    <form name="Create" id="formCategories" class="form-horizontal">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         @{ Html.RenderPartialAsync("CategoriesPartial"); }
     </form>
 </div>
 
 <script>
-    require(["jquery", 'kendo.all.min', "toolkit"], function ($) {
+    require(["jquery", "js/hd/FormHelper.js", 'kendo.all.min', "kendo.aspnetmvc.min", "toolkit"], function ($, formHelper) {
+        _formHelper = formHelper;
 
         var dataCate = new kendo.data.HierarchicalDataSource({
             transport: {
@@ -39,7 +40,6 @@
             }
         });
 
-
         $("#dropdowntree").kendoDropDownTree({
             placeholder: "Select ...",
             checkboxes: {
@@ -50,10 +50,29 @@
             dataTextField: 'Name',
             dataValueField: 'Id',
             loadOnDemand: true,  // Chỉ load nút con khi bấm vào nút cha. nếu để false nó sẽ load tất cả các nút con khi bấm vào dropdown
-            //parentId: "ParentId",
-        });
-       
 
+        });
+
+
+        $('#createBtn').click(function (e) {
+
+                var categories = _formHelper.serializeObject('#formCategories');
+                console.log("Categories: ", categories);
+
+                var multiselect = $('#dropdowntree').data('kendoDropDownTree');
+                var dDTreeItems = multiselect.value();
+                //var dDTreeItems = JSON.parse(JSON.stringify(multiselect.value()));
+                
+                console.log("ParentId: ", dDTreeItems);
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Create")',
+                    data: { model: categories, parentIds: dDTreeItems },
+                    success: function (data) {
+                        console.log('susseeded');
+                    }
+                });
+        });
     })
 
 </script>
@@ -62,7 +81,7 @@
         <button icon-name="action-cancel" name="close" class="btn btn-default" data-dismiss="modal">
             @Localizer["Close"]
         </button>
-        <button icon-name="action-save" name="submit" class="btn btn-success" form="formCreate">
+        <button icon-name="action-save"  class="btn btn-success" form="formCategories" id="createBtn">
             @Localizer["Save"]
         </button>
     </div>

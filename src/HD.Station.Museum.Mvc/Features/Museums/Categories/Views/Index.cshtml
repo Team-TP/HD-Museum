@@ -16,102 +16,107 @@
 <div id="quotaModal" class="modal fade" tabindex="-1" role="dialog">
 
 </div>
-@{ var properties = typeof(CategoriesViewModel).GetProperties().OrderBy(p => p.GetCustomAttribute<GridDisplayAttribute>()?.Order ?? 999);
-                List<object> mockList = new List<object> { };
-                var groupable = false;
-                var groups = new List<object>(); }
-@(Html.Kendo()
-    .Grid(mockList)
-    .Name("grid")
-    .Columns(columns =>
-    {
-        foreach (var property in properties)
-        {
-            if (property.HasCustomAttribute<GridDisplayAttribute>(false))
-            {
-                var attr = property.GetCustomAttribute<GridDisplayAttribute>();
-                var name = attr.Name ?? property.Name;
-                var bound = columns.Bound(name)
-                                   .Sortable(attr.Sortable)
-                                   .Filterable(attr.Filterable)
-                                   .Title(attr.Title ?? property.Name)
-                                   .Width(attr.Width)
-                                   .Groupable(attr.Groupable);
 
-                if (attr.Groupable) { groupable = true; groups.Add(new { field = name }); }
+@{ var properties = Model.ViewType.GetProperties().OrderBy(p => p.GetCustomAttribute<GridDisplayAttribute>()?.Order ?? 999);
+                List<object> mockList = new List<object> { }; }
 
-                if (!string.IsNullOrWhiteSpace(attr.Template))
-                {
-                    bound.ClientTemplate(attr.Template);
-                }
-                else
-                if (typeof(bool).IsAssignableFrom(property.PropertyType))
-                {
-                    bound
-                    .ClientTemplate($"<input type='checkbox' #={property.Name} ? 'checked=checked' : '' # disabled='disabled' />");
-                }
-                var attrs = property.HtmlAttrs<GridDisplayAttribute>();
+@(Html.Kendo().TreeList<CategoriesViewModel>()
+                        .Name("grid")
+                            .Columns(columns =>
+                            {
+                                foreach (var property in properties)
+                                {
+                                    if (property.Name == "IsGroup") { continue; }
+                                    if (property.HasCustomAttribute<GridDisplayAttribute>(false))
+                                    {
+                                        var attr = property.GetCustomAttribute<GridDisplayAttribute>();
+                                        var name = attr.Name ?? property.Name;
+                                        var bound = columns.Add()
+                                        .Field(name)
+                                        .Sortable(attr.Sortable)
+                                        .Filterable(attr.Filterable)
+                                        .Title(Localizer[attr.Title ?? property.Name].Value)
+                                        .Width(attr.Width)
+                                        ;
 
-                if (attrs != null)
-                {
-                    var a = new ExpandoObject();
-                    foreach (var kvp in attrs)
-                    {
-                        ((ICollection<KeyValuePair<string, object>>)a)
-                        .Add(new KeyValuePair<string, object>(kvp.Key, kvp.Value));
-                    }
-                    dynamic attrsObj = a;
-                    bound.HeaderHtmlAttributes(attrsObj)
-                         .HtmlAttributes(attrsObj)
-                    ;
-                }
-            }
-            else
-            {
-                columns.Bound(property.Name).Hidden();
-            }
-        }
-        var baseUrl = Url.Action("Index");
+                                        if (!string.IsNullOrWhiteSpace(attr.Template))
+                                        {
+                                            bound.Template(attr.Template);
+                                        }
+                                        else if (typeof(bool).IsAssignableFrom(property.PropertyType))
+                                        {
+                                            bound
+                                            .Template($"<input type='checkbox' #={property.Name} ? 'checked=checked' : '' # disabled='disabled' />").Width(150);
+                                        }
+                                        var attrs = property.HtmlAttrs<GridDisplayAttribute>();
 
-        var quotaMUrl = Url.Action("QuotaManager");
-        var quotaBtn = string.Format("<button id='btnQuotaManager' onClick=" + "LoadQuota('#: Id #')" + " class='btn btn-sm btn-success-outline'><span class='icon icon-tools'></span>{1}</button>",
-        quotaMUrl, Localizer["Quota Manager"].Value);
+                                        if (attrs != null)
+                                        {
+                                            var a = new ExpandoObject();
+                                            foreach (var kvp in attrs)
+                                            {
+                                                ((ICollection<KeyValuePair<string, object>>)a).Add(new KeyValuePair<string, object>(kvp.Key, kvp.Value));
+                                            }
+                                            dynamic attrsObj = a;
+                                            bound
+                                            .HeaderAttributes(attrsObj)
+                                            .HtmlAttributes(attrsObj);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        columns.Add().Field(property.Name).Hidden();
+                                    }
+                                }
 
-        var details = string.Format("<a class='btn btn-sm btn-info-outline' href='{0}/#: Id #'><span class='icon icon-action-detail'></span>{1}</a>",
-        baseUrl, Localizer["Details"].Value);
+                                var baseUrl = Url.Action("Index");
+                                //var addMetadata = string.Format("<a class='btn btn-sm btn-primary-outline' title='{1}' data-toggle='modal' data-target='\\\\#metadataModal' data-parentid='#: Id #'><span class='icon icon-tools'></span></a>",
+                                //                           baseUrl, Localizer["Setting Metadata"].Value);
+                                //var addMetadata = string.Format("<a class='btn btn-sm btn-primary-outline' title='{1}' href='{0}/#: Id #/CreateCategoriesMetadata' data-parentid='#: Id #'><span class='icon icon-tools'></span></a>",
+                                //                           baseUrl, Localizer["Setting Metadata"].Value);
+                                var addChild = string.Format("<a class='btn btn-sm btn-primary-outline' title='{1}' data-toggle='modal' data-target='\\\\#manageModal' data-parentid='#: Id #'><span class='icon icon-action-create'></span></a>",
+                                                           baseUrl, Localizer["Add Element"].Value);
 
-        var edit = string.Format("<a class='btn btn-sm btn-primary-outline' data-toggle='modal' data-target='\\\\#editModal' data-id='#: Id #'><span class='icon icon-action-edit'></span>{1}</a>",
-        baseUrl, Localizer["Edit"].Value);
+                                var details = string.Format("<a class='btn btn-sm btn-info-outline'  title='{1}' href='{0}/#: Id #'><span class='icon icon-action-detail'></span></a>",
+                                baseUrl, Localizer["Details"].Value);
 
-        var delete = string.Format("<a class='btn btn-sm btn-danger-outline' href='{0}/#: Id #/Delete'><span class='icon icon-action-delete'></span>{1}</a>",
-        baseUrl, Localizer["Delete"].Value);
+                                var edit = string.Format("<a class='btn btn-sm btn-primary-outline' title='{1}' data-toggle='modal' data-target='\\\\#editModal' data-parentid='#: Id #' ><span class='icon icon-action-edit'></span></a>",
+                                baseUrl, Localizer["Edit"].Value);
 
-        columns
-        .Template("<div class='btn-group'>" + edit + details + delete + quotaBtn + "</div>")
-        .HtmlAttributes(new { @class = "action-col" })
-        .Width(350)
-        .Title(" ");
-    })
-    .HtmlAttributes(new { @class = "k-grid-dynamic" })
-    .Scrollable(scroll => scroll
-    .Enabled(true)
-    )
-    .Pageable(pageable => pageable
-    .Refresh(true)
-    .PageSizes(new int[] { 50, 100, 150 })
-    .ButtonCount(5)
-    )
-    .Filterable()
-    .Sortable()
-    .Groupable(groupable)
-    .Resizable(config => { config.Columns(true); })
-    .DataSource(dataSource => dataSource
-        .Ajax()
-        .PageSize(50)
-    .Read(read => read.Action("Read", nameof(Categories)))
-    )
-    .Deferred()
+                                var delete = string.Format("<a class='btn btn-sm btn-danger-outline' href='{0}/#: Id #/Delete' title='{1}'><span class='icon icon-action-delete'></span></a>",
+                                baseUrl, Localizer["Delete"].Value);
+
+                                var template1 = "";
+
+                                template1 = "<div class='btn-group'>" + edit + details + addChild + delete + "</div>";
+                                columns.Add()
+                                .Template(template1)
+                                .HtmlAttributes(new { @class = "action-col" })
+                                .Width(230)
+                                .Sortable(false)
+                                .Title(" ");
+                            })
+                            .HtmlAttributes(new { @class = "k-grid-dynamic" })
+                            .Scrollable(true)
+                            .Sortable(true)
+                            .Resizable(true)
+                            .DataSource(dataSource => dataSource
+                                .Read(read => read.Action("Read", "Categories").Data("getData"))
+                                .Model(m =>
+                                {
+                                    m.Id("Id");
+                                    m.ParentId<Guid>("ParentId").Nullable(true);
+                                })
+                            )
+                            .Deferred()
 )
+
+@*<grid>
+    <header></header>
+    <body>
+    </body>
+    <footer></footer>
+</grid>*@
 
 <style>
 
@@ -123,7 +128,7 @@
     }
 </style>
 <script>
-    require(["jquery", 'kendo.grid.min', 'kendo.aspnetmvc.min'], function ($) {
+    require(["jquery", 'kendo.treelist.min','kendo.grid.min', 'kendo.aspnetmvc.min'], function ($) {
         // put deferred grid javascript inside require
         @Html.Kendo().DeferredScriptsFor("grid", false);
 
@@ -177,7 +182,7 @@
         $(document).on('shown.bs.modal', '#editModal', function (event) {
             console.log("shown modal event", event);
             var button = $(event.relatedTarget) // Button that triggered the modal
-            var categoriesId = button.data('id');
+            var categoriesId = button.data('parentid');
 
             var that = this;
 
@@ -193,12 +198,12 @@
             });
         });
         $("#createModal").on('hidden.bs.modal', function (event) {
-            $('.div-modal').remove();
+            $('.CategoriesPartial').remove();
             console.log('HIDDEN MODAL EVENT', event);
         });
 
         $("#editModal").on('hidden.bs.modal', function (event) {
-            $('.div-modal').remove();
+            $('.CategoriesPartial').remove();
             console.log('HIDDEN MODAL EVENT', event);
         });
     })

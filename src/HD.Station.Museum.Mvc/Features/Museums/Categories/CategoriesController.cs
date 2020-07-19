@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Web.Helpers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace HD.Station.Feature.Mvc
 {
@@ -51,6 +54,7 @@ namespace HD.Station.Feature.Mvc
         {
             var categories = new CategoriesEditViewModel(null);
             ViewData["Layout"] = layout == "_" ? "" : layout;
+
             //if (id == Guid.Empty)
             //{
             //    ViewBag.Id = null;
@@ -65,16 +69,25 @@ namespace HD.Station.Feature.Mvc
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> CreateAsync(CategoriesEditViewModel model)
+        public virtual async Task<IActionResult> CreateAsync(CategoriesEditViewModel model,  IEnumerable<Guid> parentIds)
         {
             var categories = model.ToModel();
+            //Guid paId = new Guid();
+            if (parentIds == null)
+            {
+                categories.ParentId = null;
+            }
+            else
+            {
+                categories.ParentId = parentIds.First();
+            }          
             var (state, edit) = await _manager.AddAsync(categories);
-            return RedirectToAction("Details", new { Id = edit.Id });
+            return RedirectToAction("Details", new { id = edit.Id });
         }
         [HttpGet("[area]/[controller]/{id:guid}")]
         public virtual async Task<IActionResult> DetailsAsync(Guid id)
         {
-            var (state, viewItem) = await _manager.ReadByIdAsync(id);
+            var (state, viewItem) = await _manager.GetByIdAsync(id);
             var model = new CategoriesViewModel(viewItem);
             return View(model);
         }
@@ -139,7 +152,16 @@ namespace HD.Station.Feature.Mvc
 
         }
         [HttpGet]
-        public virtual async Task<IActionResult> GetCategoriesAsync(Guid? id, Guid parentId)
+        public virtual async Task<IActionResult> GetCategoriesAsync(Guid? id)
+        {
+
+            var data = (await _manager.QueryAsync()).Where(c => c.ParentId == id)
+                .Select(c => new CategoriesTreeModel(c)).ToList();
+
+            return Json(data);
+        }
+        [HttpGet]
+        public virtual async Task<IActionResult> GetCategoriesEditAsync([FromForm]Guid? id, Guid parentId)
         {
 
             var data = (await _manager.QueryAsync()).Where(c => (c.ParentId == id) && (c.Id != parentId))
