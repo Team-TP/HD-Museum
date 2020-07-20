@@ -82,7 +82,7 @@ namespace HD.Station.Feature.Mvc
                 categories.ParentId = null;
             }          
             var (state, edit) = await _manager.AddAsync(categories);
-            return RedirectToAction("Details", new { id = edit.Id });
+            return Json(new { redirectToUrl = Url.Action("Details", "Categories", new { Id = edit.Id }) });
         }
         [HttpGet("[area]/[controller]/{id:guid}")]
         public virtual async Task<IActionResult> DetailsAsync(Guid id)
@@ -153,10 +153,10 @@ namespace HD.Station.Feature.Mvc
                     Title = "Ok"
                 };
 
-            return RedirectToAction("Details", new { id = dt.Id });
+            return Json(new { redirectToUrl = Url.Action("Details", "Categories", new { Id = dt.Id }) });
             }
             ViewBag.Notice = result.ToAlert();
-            return ();
+            return View(model);
 
         }
         [HttpGet]

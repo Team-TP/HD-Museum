@@ -66,19 +66,12 @@
                     type: "POST",
                     url: '@Url.Action("Create")',
                     data: { model: categories, parentIds: dDTreeItems },
-                    function(data) {
-                        console.log('susseeded');
-                        if (data.Succeeded) {
-                            var artifactId = data.Data;
-                            console.log('susseeded....');
-                            @*document.location = `@Url.Action("Details",new {id = Guid.Empty }).Replace(Guid.Empty.ToString(), "${artifactId}")`;*@
-                        } else {
-                            console.log("error: ", data);
-                            alert('@Localizer["Error: Can not create Artifact"]');
-                            $('#createBtn').prop("disabled", false);
-                            return;
-                        }
+                    success: function(data) {
+                        window.location.href = data.redirectToUrl;
+                        console.log('susseeded....');
+  
                     }
+                            
                 });
         });
     })
@@ -89,7 +82,7 @@
         <button icon-name="action-cancel" name="close" class="btn btn-default" data-dismiss="modal">
             @Localizer["Close"]
         </button>
-        <button icon-name="action-save"  class="btn btn-success" form="formCategories" id="createBtn">
+        <button icon-name="action-save" class="btn btn-success" id="createBtn">
             @Localizer["Save"]
         </button>
     </div>

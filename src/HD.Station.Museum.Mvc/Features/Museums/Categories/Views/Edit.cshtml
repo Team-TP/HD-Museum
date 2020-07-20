@@ -57,7 +57,6 @@
         });
 
         var parentid = '@Model.ParentId';
-
         console.log("ParentId", parentid);
         $("#dropdowntree").kendoDropDownTree({
             checkboxes: {
@@ -86,12 +85,12 @@
             url: '@Url.Action("Edit")',
             data: { model: categories, parentIds: dDTreeItems },
             success: function (data) {
-                    if (data.Succeeded) {
-                        document.location = '@Url.Action("Details", new { id = Model.Id })';
+                    window.location.href = data.redirectToUrl;
                         console.log('susseeded');
-                    }
                 }
             });
+            console.log(data);
+            debugger
         });
     })
 
@@ -101,7 +100,7 @@
         <button icon-name="action-cancel" name="close" class="btn btn-default" data-dismiss="modal">
             @Localizer["Close"]
         </button>
-        <button icon-name="action-save" name="submit" class="btn btn-success" id="editBtn" form="formEdit">
+        <button icon-name="action-save" name="submit" class="btn btn-success"  id="editBtn" >
             @Localizer["Edit"]
         </button>
     </div>
