@@ -16,7 +16,7 @@
 </div>
 <div notice-for="message"></div>
 <div class="content col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
-    <form name="Edit" asp-route-id="@ViewBag.Id" asp-action="Edit" id="formEdit" class="form-horizontal">
+    <form name="Edit" id="formEdit" class="form-horizontal">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <fieldset>
             @{ Html.RenderPartialAsync("CategoriesPartial"); }
@@ -37,7 +37,8 @@
 </div>
 
 <script>
-    require(["jquery", 'kendo.all.min', "toolkit"], function ($) {
+    require(["jquery", "js/hd/FormHelper.js", 'kendo.all.min', "kendo.aspnetmvc.min", "toolkit"], function ($, formHelper) {
+        _formHelper = formHelper;
 
         var dataCate = new kendo.data.HierarchicalDataSource({
             transport: {
@@ -55,17 +56,43 @@
             }
         });
 
+        var parentid = '@Model.ParentId';
 
+        console.log("ParentId", parentid);
         $("#dropdowntree").kendoDropDownTree({
-            //checkboxes: {
-            //    template: "<input type='checkbox' name='checkedFiles[#= item.id #]' value='true'/>"
-            //},
+            checkboxes: {
+                template: "<input type='checkbox' name='checkedFiles[#= item.id #]' value='true'/>"
+            },
             dataSource: dataCate,
             dataTextField: "Name",
             dataValueField: "Id",
             loadOnDemand: false,
+            value: parentid
+
         });
 
+
+        $('#editBtn').click(function (e) {
+
+        var categories = _formHelper.serializeObject('#formEdit');
+        console.log("Categories: ", categories);
+
+        var multiselect = $('#dropdowntree').data('kendoDropDownTree');
+        var dDTreeItems = multiselect.value();
+            console.log("ParentId: ", dDTreeItems);
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Edit")',
+            data: { model: categories, parentIds: dDTreeItems },
+            success: function (data) {
+                    if (data.Succeeded) {
+                        document.location = '@Url.Action("Details", new { id = Model.Id })';
+                        console.log('susseeded');
+                    }
+                }
+            });
+        });
     })
 
 </script>
@@ -74,7 +101,7 @@
         <button icon-name="action-cancel" name="close" class="btn btn-default" data-dismiss="modal">
             @Localizer["Close"]
         </button>
-        <button icon-name="action-save" name="submit" class="btn btn-success" form="formEdit">
+        <button icon-name="action-save" name="submit" class="btn btn-success" id="editBtn" form="formEdit">
             @Localizer["Edit"]
         </button>
     </div>

@@ -73,13 +73,13 @@ namespace HD.Station.Feature.Mvc
         {
             var categories = model.ToModel();
             //Guid paId = new Guid();
-            if (parentIds == null)
+            if (parentIds.Any())
             {
-                categories.ParentId = null;
+                categories.ParentId = parentIds.First();
             }
             else
             {
-                categories.ParentId = parentIds.First();
+                categories.ParentId = null;
             }          
             var (state, edit) = await _manager.AddAsync(categories);
             return RedirectToAction("Details", new { id = edit.Id });
@@ -87,7 +87,7 @@ namespace HD.Station.Feature.Mvc
         [HttpGet("[area]/[controller]/{id:guid}")]
         public virtual async Task<IActionResult> DetailsAsync(Guid id)
         {
-            var (state, viewItem) = await _manager.GetByIdAsync(id);
+            var (state, viewItem) = await _manager.ReadByIdAsync(id);
             var model = new CategoriesViewModel(viewItem);
             return View(model);
         }
@@ -125,15 +125,23 @@ namespace HD.Station.Feature.Mvc
         public virtual async Task<IActionResult> EditAsync(Guid id, string layout = "_")
         {
             ViewData["Layout"] = layout == "_" ? "" : layout;
-            var (state, categories) = await _manager.GetByIdAsync(id);
+            var (state, categories) = await _manager.ReadByIdAsync(id);           
             return View(new CategoriesEditViewModel(categories));
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> EditAsync(CategoriesEditViewModel categories)
+        public virtual async Task<IActionResult> EditAsync(CategoriesEditViewModel model, IEnumerable<Guid> parentIds)
         {
-            var dt = categories.ToModel();
+            var dt = model.ToModel();
 
+            if (parentIds.Any())
+            {
+                dt.ParentId = parentIds.First();
+            }
+            else
+            {
+                dt.ParentId = null;
+            }
             var result = await _manager.UpdateAsync(dt);
 
             if (result.Succeeded)
@@ -145,10 +153,10 @@ namespace HD.Station.Feature.Mvc
                     Title = "Ok"
                 };
 
-                return RedirectToAction("Details", new { id = dt.Id });
+            return RedirectToAction("Details", new { id = dt.Id });
             }
             ViewBag.Notice = result.ToAlert();
-            return View(categories);
+            return ();
 
         }
         [HttpGet]
@@ -161,7 +169,7 @@ namespace HD.Station.Feature.Mvc
             return Json(data);
         }
         [HttpGet]
-        public virtual async Task<IActionResult> GetCategoriesEditAsync([FromForm]Guid? id, Guid parentId)
+        public virtual async Task<IActionResult> GetCategoriesEditAsync(Guid? id, Guid parentId)
         {
 
             var data = (await _manager.QueryAsync()).Where(c => (c.ParentId == id) && (c.Id != parentId))

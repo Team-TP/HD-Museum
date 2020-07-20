@@ -53,23 +53,31 @@
 
         });
 
-
         $('#createBtn').click(function (e) {
-
                 var categories = _formHelper.serializeObject('#formCategories');
                 console.log("Categories: ", categories);
 
                 var multiselect = $('#dropdowntree').data('kendoDropDownTree');
                 var dDTreeItems = multiselect.value();
                 //var dDTreeItems = JSON.parse(JSON.stringify(multiselect.value()));
-                
+
                 console.log("ParentId: ", dDTreeItems);
                 $.ajax({
                     type: "POST",
                     url: '@Url.Action("Create")',
                     data: { model: categories, parentIds: dDTreeItems },
-                    success: function (data) {
+                    function(data) {
                         console.log('susseeded');
+                        if (data.Succeeded) {
+                            var artifactId = data.Data;
+                            console.log('susseeded....');
+                            @*document.location = `@Url.Action("Details",new {id = Guid.Empty }).Replace(Guid.Empty.ToString(), "${artifactId}")`;*@
+                        } else {
+                            console.log("error: ", data);
+                            alert('@Localizer["Error: Can not create Artifact"]');
+                            $('#createBtn').prop("disabled", false);
+                            return;
+                        }
                     }
                 });
         });
