@@ -20,6 +20,11 @@ namespace Microsoft.Extensions.DependencyInjection
             buider.Services.AddScoped<IStudentManager, StudentManager>();
             buider.Services.AddScoped<IEnrollmentManager, EnrollmentManager>();
             buider.Services.AddScoped<ICategoryManager, CategoryManager>();
+
+            buider.Services.AddScoped<IMachineManager, MachineManager>();
+            buider.Services.AddScoped<ICategoryMachineManager, CategoryMachineManager>();          
+            buider.Services.AddScoped<IMachineProduceManager, MachineProduceManager>();
+            buider.Services.AddScoped<IMachineWareHouseManager, MachineWareHouseManager>();
             return buider;
         }
     }

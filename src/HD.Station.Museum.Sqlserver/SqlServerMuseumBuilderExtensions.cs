@@ -30,6 +30,11 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.AddScoped<IEnrollmentStore, EnrollmentStore>();
             builder.Services.AddScoped<ICategoryStore, CategoryStore>();
 
+            builder.Services.AddScoped<ICategoryMachineStore, CategoryMachineStore>();
+            builder.Services.AddScoped<IMachineStore, MachineStore>();
+            builder.Services.AddScoped<IMachineProduceStore, MachineProduceStore>();
+            builder.Services.AddScoped<IMachineWareHouseStore, MachineWareHouseStore>();
+
             return builder;
         }
     }

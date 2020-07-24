@@ -82,14 +82,14 @@ namespace HD.Station.Feature.Mvc
                 categories.ParentId = null;
             }          
             var (state, edit) = await _manager.AddAsync(categories);
-            return Json(new { redirectToUrl = Url.Action("Details", "Categories", new { Id = edit.Id }) });
+            return Json(new { redirectToUrl = Url.Action("Details", "Categories", new { id = edit.Id }) });
         }
         [HttpGet("[area]/[controller]/{id:guid}")]
         public virtual async Task<IActionResult> DetailsAsync(Guid id)
         {
             var (state, viewItem) = await _manager.ReadByIdAsync(id);
             var model = new CategoriesViewModel(viewItem);
-            return View(model);
+            return View(model);           
         }
         [HttpGet]
         public virtual async Task<IActionResult> DeleteAsync(Guid id)
@@ -153,11 +153,11 @@ namespace HD.Station.Feature.Mvc
                     Title = "Ok"
                 };
 
-            return Json(new { redirectToUrl = Url.Action("Details", "Categories", new { Id = dt.Id }) });
+            return Json(new { redirectToUrl = Url.Action("Details", "Categories", new { id = dt.Id }) });
             }
             ViewBag.Notice = result.ToAlert();
             return View(model);
-
+            
         }
         [HttpGet]
         public virtual async Task<IActionResult> GetCategoriesAsync(Guid? id)

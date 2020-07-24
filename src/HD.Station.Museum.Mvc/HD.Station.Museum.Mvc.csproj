@@ -21,4 +21,8 @@
     <ProjectReference Include="..\HD.Station.Museum.Abstractions\HD.Station.Museum.Abstractions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Museums\Machines\Views\" />
+  </ItemGroup>
+
 </Project>

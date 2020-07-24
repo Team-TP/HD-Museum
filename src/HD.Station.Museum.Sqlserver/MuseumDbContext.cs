@@ -11,7 +11,11 @@ namespace HD.Station.Dashboard.SqlServer
         public virtual DbSet<Courses> Course { get; set; }
         public virtual DbSet<Enrollments> Enrollment { get; set; }
         public virtual DbSet<Students> Student { get; set; }
-        public virtual DbSet<Students> Category { get; set; }
+        public virtual DbSet<Categories> Category { get; set; }
+        public virtual DbSet<CategoryMachines> CategoryMachine { get; set; }
+        public virtual DbSet<Machines> Machine { get; set; }
+        public virtual DbSet<MachineProduces> MachineProduce { get; set; }
+        public virtual DbSet<MachineWareHouses> MachineWareHouse { get; set; }
 
         private IOptionsSnapshot<StoreOption> _optionsSnapshot;
         public string Schema => _optionsSnapshot.Value?.Schema;
@@ -55,7 +59,22 @@ namespace HD.Station.Dashboard.SqlServer
             //modelBuilder.Entity<Enrollments>()
             //.HasKey(sc => new { sc.StudentId, sc.CourseId });
 
-
+            modelBuilder.Entity<Machines>(entity =>
+            {
+                entity.ToTable("Machine", SchemaApp);
+            });
+            modelBuilder.Entity<CategoryMachines>(entity =>
+            {
+                entity.ToTable("CategoryMachine", SchemaApp);
+            });
+            modelBuilder.Entity<MachineProduces>(entity =>
+            {
+                entity.ToTable("MachineProduce", SchemaApp);
+            });
+            modelBuilder.Entity<MachineWareHouses>(entity =>
+            {
+                entity.ToTable("MachineWareHouse", SchemaApp);
+            });
 
 
 
