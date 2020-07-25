@@ -62,6 +62,18 @@ namespace HD.Station.Dashboard.SqlServer
             modelBuilder.Entity<Machines>(entity =>
             {
                 entity.ToTable("Machine", SchemaApp);
+                entity.HasOne(a => a.MachineProduces)
+                       .WithOne(b => b.Machines)
+                .HasForeignKey<MachineProduces>(a => a.MachineId);
+
+                entity.HasOne(a => a.MachineWarehouses)
+                       .WithOne(c => c.Machines)
+                       .HasForeignKey<MachineWareHouses>(a => a.MachineId);
+
+                entity.HasMany(a => a.ChildrenMachine)
+                        .WithOne(b => b.ParentMachine)
+                        .HasForeignKey(a => a.ParentId);
+
             });
             modelBuilder.Entity<CategoryMachines>(entity =>
             {

@@ -1,4 +1,4 @@
-﻿@model EnrollmentsIndexViewModel
+﻿@model MachinesIndexViewModel
 @using System.Dynamic;
 @{
     ViewData["Title"] = Localizer["Storage Location"];
@@ -19,7 +19,7 @@
 
 </div>
 @{
-    var properties = typeof(EnrollmentsViewModel).GetProperties().OrderBy(p => p.GetCustomAttribute<GridDisplayAttribute>()?.Order ?? 999);
+    var properties = typeof(MachinesViewModel).GetProperties().OrderBy(p => p.GetCustomAttribute<GridDisplayAttribute>()?.Order ?? 999);
     List<object> mockList = new List<object> { };
     var groupable = false;
     var groups = new List<object>();
@@ -78,16 +78,16 @@
         var baseUrl = Url.Action("Index");
 
         var quotaMUrl = Url.Action("QuotaManager");
-        var quotaBtn = string.Format("<button id='btnQuotaManager' onClick="+ "LoadQuota('#: Id #')" + " class='btn btn-sm btn-success-outline'><span class='icon icon-tools'></span>{1}</button>",
+        var quotaBtn = string.Format("<button id='btnQuotaManager' onClick="+ "LoadQuota('#: Id #')" + " class='btn btn-sm btn-success-outline'><span class='icon icon-tools'></span></button>",
         quotaMUrl, Localizer["Quota Manager"].Value);
 
-        var details = string.Format("<a class='btn btn-sm btn-info-outline' href='{0}/#: Id #'><span class='icon icon-action-detail'></span>{1}</a>",
+        var details = string.Format("<a class='btn btn-sm btn-info-outline' href='{0}/#: Id #'><span class='icon icon-action-detail'></span></a>",
         baseUrl, Localizer["Details"].Value);
 
-        var edit = string.Format("<a class='btn btn-sm btn-primary-outline' data-toggle='modal' data-target='\\\\#editModal' data-id='#: Id #'><span class='icon icon-action-edit'></span>{1}</a>",
+        var edit = string.Format("<a class='btn btn-sm btn-primary-outline' data-toggle='modal' data-target='\\\\#editModal' data-id='#: Id #'><span class='icon icon-action-edit'></span></a>",
         baseUrl, Localizer["Edit"].Value);
 
-        var delete = string.Format("<a class='btn btn-sm btn-danger-outline' href='{0}/#: Id #/Delete'><span class='icon icon-action-delete'></span>{1}</a>",
+        var delete = string.Format("<a class='btn btn-sm btn-danger-outline' href='{0}/#: Id #/Delete'><span class='icon icon-action-delete'></span></a>",
         baseUrl, Localizer["Delete"].Value);
 
         columns
@@ -112,7 +112,7 @@
     .DataSource(dataSource => dataSource
         .Ajax()
         .PageSize(50)
-    .Read(read => read.Action("Read", nameof(Enrollments)))
+    .Read(read => read.Action("Read", nameof(Machines)))
     )
     .Deferred()
 )
@@ -268,6 +268,6 @@
 
 @section navigation {
     <a icon-name="action-create" class="btn btn-primary-outline" data-toggle="modal" data-target="#createModal">
-        @Localizer[$"Create {typeof(Enrollments).DisplayName()}"]
+        @Localizer[$"Create {typeof(Machines).DisplayName()}"]
     </a>
 }

@@ -1,10 +1,96 @@
-﻿using System;
+﻿using HD.Station.ComponentModel;
+using HD.Station.ComponentModel.DataAnnotations;
+using HD.Station.Museum;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace HD.Station.Museum.Mvc.Features.Museums.Machines.Models
+namespace HD.Station.Feature.Models
 {
-    class MachinesViewModel
+    public class MachinesViewModel : ViewBase<Machines, Guid>
     {
+        public MachinesViewModel() { }
+        public MachinesViewModel(Machines machines)
+        {
+            if (machines != null)
+            {
+                Id = machines.Id;
+                Name = machines.Name;
+                Description = machines.Description;
+                Disabled = machines.Disabled;
+                ParentId = machines.ParentId;
+                Stage = machines.Stage;
+                Amount = machines.Amount;
+                Price = machines.Price;
+                if (machines.MachineProduces != null) { MachineProduce = new MachineProduceViewModel(machines.MachineProduces); }
+                if (machines.MachineWarehouses != null) { MachineWareHouse = new MachineWareHouseViewModel(machines.MachineWarehouses); }
+
+            }
+        }
+        [Hidden]
+        public override Guid Id { get => base.Id; set => base.Id = value; }
+        [Display]
+        [GridDisplay]
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+        [Display]
+        [GridDisplay]
+        public bool Disabled { get; set; }
+        [Hidden]
+        public Guid? ParentId { get; set; }
+
+        [Display]
+        [GridDisplay]
+        public MachineType Stage { get; set; }
+
+        [Display]
+        [GridDisplay]
+        public int Amount { get; set; }
+
+        [Display]
+        [GridDisplay]
+        public decimal Price { get; set; }
+
+        [Display]
+        [GridDisplay]
+        public DateTimeOffset DateOfManufacture => MachineProduce.DateOfManufacture;
+
+        public DateTimeOffset DateTest => MachineProduce.DateTest;
+
+        public MachineProduceType State => MachineProduce.State;
+
+        public string Note => MachineProduce.Note;
+
+        [Display]
+        [GridDisplay]
+        public string Address => MachineWareHouse.Address;
+        public string NoteWH => MachineWareHouse.Note;
+        [Display]
+        [GridDisplay]
+        public string Phone => MachineWareHouse.Phone;
+        public string Email => MachineWareHouse.Email;
+
+        public MachineProduceViewModel MachineProduce { get; set; }
+
+        public MachineWareHouseViewModel MachineWareHouse { get; set; }
+
+        public override Machines ToModel()
+        {
+            var machines = new Machines
+            {
+                Id = Id,
+                Name = Name,
+                Description = Description,
+                Disabled = Disabled,
+                ParentId = ParentId,
+                Stage = Stage,
+                Amount = Amount,
+                Price = Price,
+        };
+            return machines;
+        }
     }
 }

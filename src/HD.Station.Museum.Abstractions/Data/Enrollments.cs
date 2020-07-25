@@ -16,6 +16,6 @@ namespace HD.Station.Museum
         public bool Disable { get; set; }
         
         public virtual Students Student { get; set; }
-         public virtual Courses Courses { get; set; }
+        public virtual Courses Courses { get; set; }
     }
 }

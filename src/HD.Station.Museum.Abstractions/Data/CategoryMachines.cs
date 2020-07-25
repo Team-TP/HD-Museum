@@ -13,9 +13,9 @@ namespace HD.Station.Museum
         public Guid? MachineId { get; set; }
         public Guid? CategoryId { get; set; }
 
-        public virtual Categories Category { get; set; }
+        //public virtual Categories Category { get; set; }
 
-        public virtual Machines Machine { get; set; }
+        //public virtual Machines Machine { get; set; }
 
     }
 }

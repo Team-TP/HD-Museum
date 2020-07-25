@@ -22,7 +22,7 @@ namespace HD.Station.Museum
 
         public ICollection<Categories> ChildrenCategory { get; set; }
 
-        public ICollection<CategoryMachines> CategoryMachine { get; set; }
+        //public ICollection<CategoryMachines> CategoryMachine { get; set; }
 
     }
 }

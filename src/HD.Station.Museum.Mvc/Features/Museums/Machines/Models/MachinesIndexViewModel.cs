@@ -1,10 +1,16 @@
-﻿using System;
+﻿using HD.Station.ComponentModel.DataAnnotations;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace HD.Station.Museum.Mvc.Features.Museums.Machines.Models
+namespace HD.Station.Feature.Models
 {
-    class MachinesIndexViewModel
+    public class MachinesIndexViewModel
     {
+        [Hidden]
+        public string Filter { get; set; }
+        [Display]
+        public bool IncludeDisabled { get; set; }
     }
 }

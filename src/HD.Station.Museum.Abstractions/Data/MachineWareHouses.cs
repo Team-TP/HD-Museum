@@ -13,6 +13,7 @@ namespace HD.Station.Museum
         public string Note { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public virtual Machines Machines { get; set; }
 
     }
 }

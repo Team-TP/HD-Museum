@@ -19,7 +19,16 @@ namespace HD.Station.Museum
         public int Amount { get; set; }
         public decimal Price { get; set; }
 
-        public ICollection<CategoryMachines> CategoryMachine { get; set; }
+        //public ICollection<CategoryMachines> CategoryMachine { get; set; }
+
+        [Newtonsoft.Json.JsonIgnore]
+        public Machines ParentMachine { get; set; }
+
+        public ICollection<Machines> ChildrenMachine { get; set; }
+
+        public virtual MachineProduces MachineProduces { get; set; }
+
+        public virtual MachineWareHouses MachineWarehouses { get; set; }
 
     }
 }

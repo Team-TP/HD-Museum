@@ -14,6 +14,7 @@ namespace HD.Station.Museum
         public DateTimeOffset DateTest { get; set; }
         public MachineProduceType State { get; set; }
         public string Note { get; set; }
+        public virtual Machines Machines { get; set; }
 
     }
 }
