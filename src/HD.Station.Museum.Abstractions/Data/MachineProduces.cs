@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -14,6 +15,7 @@ namespace HD.Station.Museum
         public DateTimeOffset DateTest { get; set; }
         public MachineProduceType State { get; set; }
         public string Note { get; set; }
+        [JsonIgnore]
         public virtual Machines Machines { get; set; }
 
     }

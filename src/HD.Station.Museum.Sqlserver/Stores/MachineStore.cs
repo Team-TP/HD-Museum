@@ -22,11 +22,12 @@ namespace HD.Station.Museum.Sqlserver.Stores
         {
             var d = base.Query()
                 .Include(a => a.MachineProduces)
-                .Include(a => a.MachineWarehouses);
+                .Include(a => a.MachineWarehouses)
+                .Where(a => a.ParentId == null);
             return d;
         }
 
-        public override async Task<Machines> ReadByIdAsync(Guid id)
+        public async Task<Machines> ReadMachineByIdAsync(Guid id)
         {
             var d = await DbContext.Set<Machines>().Include(a => a.MachineProduces)
                                                     .Include(a => a.MachineWarehouses)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -13,6 +14,7 @@ namespace HD.Station.Museum
         public string Note { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        [JsonIgnore]
         public virtual Machines Machines { get; set; }
 
     }

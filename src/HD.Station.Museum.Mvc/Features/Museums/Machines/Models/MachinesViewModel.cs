@@ -24,8 +24,11 @@ namespace HD.Station.Feature.Models
                 Stage = machines.Stage;
                 Amount = machines.Amount;
                 Price = machines.Price;
-                if (machines.MachineProduces != null) { MachineProduce = new MachineProduceViewModel(machines.MachineProduces); }
-                if (machines.MachineWarehouses != null) { MachineWareHouse = new MachineWareHouseViewModel(machines.MachineWarehouses); }
+                ChildMachines = machines.ChildrenMachine;
+                MachineWareHouse = machines.MachineWarehouses;
+                MachineProduce = machines.MachineProduces;
+                //if (machines.MachineProduces != null) { MachineProduce = new MachineProduceViewModel(machines.MachineProduces); }
+                //if (machines.MachineWarehouses != null) { MachineWareHouse = new MachineWareHouseViewModel(machines.MachineWarehouses); }
 
             }
         }
@@ -73,10 +76,16 @@ namespace HD.Station.Feature.Models
         public string Phone => MachineWareHouse.Phone;
         public string Email => MachineWareHouse.Email;
 
-        public MachineProduceViewModel MachineProduce { get; set; }
 
-        public MachineWareHouseViewModel MachineWareHouse { get; set; }
+        public virtual MachineProduces MachineProduce { get; set; }
 
+        public virtual MachineWareHouses MachineWareHouse { get; set; }
+
+
+        //public MachineProduceViewModel MachineProduce { get; set; }
+
+        //public MachineWareHouseViewModel MachineWareHouse { get; set; }
+        public IEnumerable<Machines> ChildMachines { get; set; }
         public override Machines ToModel()
         {
             var machines = new Machines

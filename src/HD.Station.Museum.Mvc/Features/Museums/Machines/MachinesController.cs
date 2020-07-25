@@ -74,7 +74,7 @@ namespace HD.Station.Feature.Mvc
         [HttpGet("[area]/[controller]/{id:guid}")]
         public virtual async Task<IActionResult> DetailsAsync(Guid id)
         {
-            var (state, viewItem) = await _manager.ReadByIdAsync(id);
+            var (state, viewItem) = await _manager.ReadMachineByIdAsync(id);
             var model = new MachinesViewModel(viewItem);
             return View(model);
         }
