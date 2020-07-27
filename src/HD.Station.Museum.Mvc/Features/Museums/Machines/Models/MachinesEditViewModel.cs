@@ -16,19 +16,32 @@ namespace HD.Station.Feature.Models
         {
             if (machines != null)
             {
+                Id = machines.Id;
+                Name = machines.Name;
+                Description = machines.Description;
+                Disabled = machines.Disabled;
+                ParentId = machines.ParentId;
+                Stage = machines.Stage;
+                Amount = machines.Amount;
+                Price = machines.Price;
+                ChildMachines = machines.ChildrenMachine;
+                MachineWareHouse = machines.MachineWarehouses;
+                MachineProduce = machines.MachineProduces;
+                //if (machines.MachineProduces != null) { MachineProduce = new MachineProduceViewModel(machines.MachineProduces); }
+                //if (machines.MachineWarehouses != null) { MachineWareHouse = new MachineWareHouseViewModel(machines.MachineWarehouses); }
 
             }
         }
-        [Display]
-        public override Guid Id { get => base.Id; set => base.Id = value; }
         [Hidden]
+        public override Guid Id { get => base.Id; set => base.Id = value; }
+        [Display]
+        [GridDisplay]
         public string Name { get; set; }
         [Display]
         [GridDisplay]
         public string Description { get; set; }
-        [Display]
-        [GridDisplay]
-        public bool Disable { get; set; }
+
+        public bool Disabled { get; set; }
         [Hidden]
         public Guid? ParentId { get; set; }
 
@@ -46,42 +59,44 @@ namespace HD.Station.Feature.Models
 
         [Display]
         [GridDisplay]
-        public DateTimeOffset DateOfManufacture { get; set; }
+        public DateTimeOffset DateOfManufacture => MachineProduce.DateOfManufacture;
+
+        public DateTimeOffset DateTest => MachineProduce.DateTest;
+
+        public MachineProduceType State => MachineProduce.State;
+
+        public string Note => MachineProduce.Note;
 
         [Display]
         [GridDisplay]
-        public DateTimeOffset DateTest { get; set; }
+        public string Address => MachineWareHouse.Address;
+        public string NoteWH => MachineWareHouse.Note;
 
-        [Display]
-        [GridDisplay]
-        public MachineProduceType State { get; set; }
+        public string Phone => MachineWareHouse.Phone;
+        public string Email => MachineWareHouse.Email;
 
-        [Display]
-        [GridDisplay]
-        public string Note { get; set; }
 
-        [Display]
-        [GridDisplay]
-        public string Address { get; set; }
-        //[Display]
-        //[GridDisplay]
-        //public string Note =>  { get; set; }
-        [Display]
-        [GridDisplay]
-        public string Phone { get; set; }
-        [Display]
-        [GridDisplay]
-        public string Email { get; set; }
-        [Display]
-        public MachineProduces MachineProduce { get; set; }
-        [Display]
-        public MachineWareHouses MachineWareHouse { get; set; }
+        public virtual MachineProduces MachineProduce { get; set; }
 
+        public virtual MachineWareHouses MachineWareHouse { get; set; }
+
+
+        //public MachineProduceViewModel MachineProduce { get; set; }
+
+        //public MachineWareHouseViewModel MachineWareHouse { get; set; }
+        public IEnumerable<Machines> ChildMachines { get; set; }
         public override Machines ToModel()
         {
             var machines = new Machines
             {
-
+                Id = Id,
+                Name = Name,
+                Description = Description,
+                Disabled = Disabled,
+                ParentId = ParentId,
+                Stage = Stage,
+                Amount = Amount,
+                Price = Price,
             };
             return machines;
         }

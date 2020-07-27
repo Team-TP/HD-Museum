@@ -178,8 +178,8 @@
         $(document).on('shown.bs.modal', '#editModal', function (event) {
             console.log("shown modal event", event);
             var button = $(event.relatedTarget); // Button that triggered the modal
-            var enrollId = button.attr('data-id');
-            console.log("shown modal event", enrollId);
+            var machineId = button.attr('data-id');
+            console.log("MachineID: ", machineId);
             var that = this;
             $(document).off('focusin.modal')
             
@@ -188,7 +188,7 @@
                 url: '@Url.Action("Edit")',
                 /**/
                 type: "GET",
-                data: { layout: "_ModalLayout", id: enrollId },
+                data: { layout: "_ModalLayout", id: machineId },
                 success: function (data) {
                     $(".modal-content", that).html(data);
                 }
@@ -218,7 +218,7 @@
     <div class="modal-dialog w-full" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4>@Localizer["Create New Enrollment"]</h4>
+                <h4>@Localizer["Create New Machine"]</h4>
             </div>
             <div class="modal-body">
                 <div class="spinner overlay-loading">
@@ -244,7 +244,7 @@
     <div class="modal-dialog w-full" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4>@Localizer["Edit Enrollment"]</h4>
+                <h4>@Localizer["Edit Machine"]</h4>
             </div>
             <div class="modal-body">
                 <div class="spinner overlay-loading">

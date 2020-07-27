@@ -111,7 +111,7 @@ namespace HD.Station.Feature.Mvc
         public virtual async Task<IActionResult> EditAsync(Guid id, string layout = "_")
         {
             ViewData["Layout"] = layout == "_" ? "" : layout;
-            var (state, machine) = await _manager.GetByIdAsync(id);
+            var (state, machine) = await _manager.ReadByIdAsync(id);
             return View(new MachinesEditViewModel(machine));
         }
 
@@ -131,7 +131,8 @@ namespace HD.Station.Feature.Mvc
                     Title = "Ok"
                 };
 
-                return RedirectToAction("Details", new { id = dt.Id });
+                return RedirectToAction("Index");
+                //return RedirectToAction("Details", new { id = dt.Id });
             }
             ViewBag.Notice = result.ToAlert();
             return View(machine);

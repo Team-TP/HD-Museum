@@ -37,10 +37,10 @@ namespace HD.Station.Feature.Models
         [Display]
         [GridDisplay]
         public string Name { get; set; }
-
-        public string Description { get; set; }
         [Display]
         [GridDisplay]
+        public string Description { get; set; }
+
         public bool Disabled { get; set; }
         [Hidden]
         public Guid? ParentId { get; set; }
@@ -71,8 +71,7 @@ namespace HD.Station.Feature.Models
         [GridDisplay]
         public string Address => MachineWareHouse.Address;
         public string NoteWH => MachineWareHouse.Note;
-        [Display]
-        [GridDisplay]
+
         public string Phone => MachineWareHouse.Phone;
         public string Email => MachineWareHouse.Email;
 

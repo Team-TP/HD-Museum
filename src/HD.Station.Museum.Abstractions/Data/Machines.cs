@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -21,11 +22,12 @@ namespace HD.Station.Museum
 
         //public ICollection<CategoryMachines> CategoryMachine { get; set; }
 
-        [Newtonsoft.Json.JsonIgnore]
+        [JsonIgnore]
         public Machines ParentMachine { get; set; }
 
         public ICollection<Machines> ChildrenMachine { get; set; }
 
+        [JsonIgnore]
         public virtual MachineProduces MachineProduces { get; set; }
 
         public virtual MachineWareHouses MachineWarehouses { get; set; }
