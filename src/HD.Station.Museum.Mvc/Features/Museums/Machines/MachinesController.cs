@@ -111,15 +111,14 @@ namespace HD.Station.Feature.Mvc
         public virtual async Task<IActionResult> EditAsync(Guid id, string layout = "_")
         {
             ViewData["Layout"] = layout == "_" ? "" : layout;
-            var (state, machine) = await _manager.ReadByIdAsync(id);
+            var (state, machine) = await _manager.ReadMachineByIdAsync(id);
             return View(new MachinesEditViewModel(machine));
         }
 
         [HttpPost]
         public virtual async Task<IActionResult> EditAsync(MachinesEditViewModel machine)
         {
-            var dt = machine.ToModel();
-
+            var dt = machine.ToModel();          
             var result = await _manager.UpdateAsync(dt);
 
             if (result.Succeeded)

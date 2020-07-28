@@ -1,4 +1,4 @@
-﻿@model EnrollmentsEditViewModel
+﻿@model MachinesEditViewModel
 @{
     ViewData["Title"] = Localizer["Storage Location"];
     ViewData["SubTitle"] = Localizer["Create"];
@@ -15,10 +15,19 @@
 <div class="content col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
     <form name="Create" id="formCreate" asp-action="Create" class="form-horizontal">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        @{
-            Html.RenderPartialAsync("_CreateEditPartial", Model);
-        }
-
+            @Html.HiddenFor(m => m.Id);
+            <div class="form-group">
+                <label for="Title">@Localizer["Name"]:</label>
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label for="Credits">@Localizer["Description"]:</label>
+                @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <lable for="Disabled">@Localizer["Disabled"]:</lable>
+                @Html.CheckBoxFor(m => m.Disabled, new { @class = "form-control" })
+            </div>
     </form>
 </div>
 

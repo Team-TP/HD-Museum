@@ -37,5 +37,37 @@ namespace HD.Station.Museum.Sqlserver.Stores
             return d;
         }
 
+        //public override async Task<OperationResult> UpdateAsync(Machines model)
+        //{
+        //    var entry = DbContext.Update(model);
+        //    if (model.MachineProduces != null)
+        //    {
+        //        if ((DbContext.Set<MachineProduces>().Include(a => a.Machines).Where(i => i.MachineId == model.Id)).Count() == 0)
+        //        {
+        //            model.MachineProduces.MachineId = entry.Entity.Id;
+        //            await DbContext.AddAsync(model.MachineProduces);
+        //        }
+        //        else
+        //        {
+        //            DbContext.Update(model.MachineProduces);
+        //        }
+        //    }
+        //    if (model.MachineWarehouses != null)
+        //    {
+        //        if ((DbContext.Set<MachineWareHouses>().Include(a => a.Machines).Where(i => i.MachineId == model.Id)).Count() == 0)
+        //        {
+        //            model.MachineWarehouses.MachineId = entry.Entity.Id;
+        //            await DbContext.AddAsync(model.MachineWarehouses);
+        //        }
+        //        else
+        //        {
+        //            DbContext.Update(model.MachineWarehouses);
+        //        }
+        //    }
+        //    await DbContext.SaveChangesAsync(CancellationToken);
+        //    DbContext.Database.CommitTransaction();
+        //    return (OperationResult.Success);
+        //}
+
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection.PortableExecutable;
 using System.Text;
 
 namespace HD.Station.Feature.Models
@@ -64,7 +65,8 @@ namespace HD.Station.Feature.Models
         public DateTimeOffset DateTest => MachineProduce.DateTest;
 
         public MachineProduceType State => MachineProduce.State;
-
+        [Display]
+        [GridDisplay]
         public string Note => MachineProduce.Note;
 
         [Display]

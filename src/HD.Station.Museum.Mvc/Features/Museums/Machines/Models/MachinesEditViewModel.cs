@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection.PortableExecutable;
 using System.Text;
 
 namespace HD.Station.Feature.Models
@@ -24,67 +25,46 @@ namespace HD.Station.Feature.Models
                 Stage = machines.Stage;
                 Amount = machines.Amount;
                 Price = machines.Price;
-                ChildMachines = machines.ChildrenMachine;
-                MachineWareHouse = machines.MachineWarehouses;
-                MachineProduce = machines.MachineProduces;
-                //if (machines.MachineProduces != null) { MachineProduce = new MachineProduceViewModel(machines.MachineProduces); }
-                //if (machines.MachineWarehouses != null) { MachineWareHouse = new MachineWareHouseViewModel(machines.MachineWarehouses); }
+                MachineProduces = new MachineProduceEditViewModel(machines.MachineProduces);
+                MachineWarehouses = new MachineWareHouseEditViewModel(machines.MachineWarehouses);
 
             }
         }
+
         [Hidden]
         public override Guid Id { get => base.Id; set => base.Id = value; }
+
         [Display]
         [GridDisplay]
         public string Name { get; set; }
         [Display]
         [GridDisplay]
         public string Description { get; set; }
-
         public bool Disabled { get; set; }
-        [Hidden]
+
         public Guid? ParentId { get; set; }
-
-        [Display]
-        [GridDisplay]
         public MachineType Stage { get; set; }
-
         [Display]
         [GridDisplay]
         public int Amount { get; set; }
-
         [Display]
         [GridDisplay]
         public decimal Price { get; set; }
 
-        [Display]
-        [GridDisplay]
-        public DateTimeOffset DateOfManufacture => MachineProduce.DateOfManufacture;
-
-        public DateTimeOffset DateTest => MachineProduce.DateTest;
-
-        public MachineProduceType State => MachineProduce.State;
-
-        public string Note => MachineProduce.Note;
+        //public DateTimeOffset DateOfManufacture => MachineProduces.DateOfManufacture;
 
         [Display]
         [GridDisplay]
-        public string Address => MachineWareHouse.Address;
-        public string NoteWH => MachineWareHouse.Note;
+        //public string Note => MachineProduces.Note;
 
-        public string Phone => MachineWareHouse.Phone;
-        public string Email => MachineWareHouse.Email;
+        public string Address => MachineWarehouses.Address;
 
+        public virtual MachineProduceEditViewModel MachineProduces { get; set; }
 
-        public virtual MachineProduces MachineProduce { get; set; }
-
-        public virtual MachineWareHouses MachineWareHouse { get; set; }
+        public virtual MachineWareHouseEditViewModel MachineWarehouses { get; set; }
 
 
-        //public MachineProduceViewModel MachineProduce { get; set; }
 
-        //public MachineWareHouseViewModel MachineWareHouse { get; set; }
-        public IEnumerable<Machines> ChildMachines { get; set; }
         public override Machines ToModel()
         {
             var machines = new Machines
@@ -97,6 +77,8 @@ namespace HD.Station.Feature.Models
                 Stage = Stage,
                 Amount = Amount,
                 Price = Price,
+                MachineProduces = MachineProduces.ToModel(),
+                MachineWarehouses = MachineWarehouses.ToModel()
             };
             return machines;
         }

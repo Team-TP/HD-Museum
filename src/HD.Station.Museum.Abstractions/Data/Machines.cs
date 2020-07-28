@@ -27,7 +27,6 @@ namespace HD.Station.Museum
 
         public ICollection<Machines> ChildrenMachine { get; set; }
 
-        [JsonIgnore]
         public virtual MachineProduces MachineProduces { get; set; }
 
         public virtual MachineWareHouses MachineWarehouses { get; set; }
