@@ -18,10 +18,14 @@ namespace HD.Station.Feature.Mvc
     public class MachinesController : Controller
     {
         private IMachineManager _manager;
+        private IMachineProduceManager _pmanager;
+        private IMachineWareHouseManager _whmanager;
 
-        public MachinesController(IMachineManager manager)
+        public MachinesController(IMachineManager manager, IMachineProduceManager pmanager, IMachineWareHouseManager whmanager)
         {
             _manager = manager;
+            _pmanager = pmanager;
+            _whmanager = whmanager;
 
         }
         [HttpGet("[area]/[controller]")]
@@ -52,24 +56,42 @@ namespace HD.Station.Feature.Mvc
             }
         }
         [HttpGet]
-        public virtual async Task<IActionResult> CreateAsync(Guid id, string layout = "_")
+        public virtual async Task<IActionResult> CreateAsync(Guid? id, string layout = "_")
         {
             ViewData["Layout"] = layout == "_" ? "" : layout;
-            var machines = new MachinesEditViewModel(null)
-
+            var machines = new MachinesEditViewModel(null);
+            if (id == Guid.Empty)
             {
-                //Students = await GetStudentsSelectListAsync(),
-                //Courses = await GetCoursesSelectListAsync()
+                ViewBag.Id = null;
+            }
+            else
+            {
+                ViewBag.Id = id;
+            }
+            machines.ParentId = id;
+            var model = new MachineCreateViewModel
+            {
+                Machine = machines,
+                MachineProduce = new MachineProduceEditViewModel { },
+                MachineWareHouse = new MachineWareHouseEditViewModel { }
             };
-            return View(machines);
+            return View(model);
         }
         [HttpPost]
-        public virtual async Task<IActionResult> CreateAsync(MachinesEditViewModel model)
+        public virtual async Task<IActionResult> CreateAsync(MachineComponentsViewModel model/*, IEnumerable<Guid> parentIds*/)
         {
-
-            var enrollment = model.ToModel();
-            var (state, edit) = await _manager.AddAsync(enrollment);
-            return RedirectToAction("Details", new { id = edit.Id });
+            //var machines = model.ToModel();
+            //if (parentIds.Any())
+            //{
+            //    machines.ParentId = parentIds.First();
+            //}
+            //else
+            //{
+            //    machines.ParentId = null;
+            //}
+            var (state, edit) = await _manager.AddAsync(model);
+            //return RedirectToAction("Details", new { id = edit.Id });
+            return RedirectToAction("Index");
         }
         [HttpGet("[area]/[controller]/{id:guid}")]
         public virtual async Task<IActionResult> DetailsAsync(Guid id)
@@ -118,7 +140,8 @@ namespace HD.Station.Feature.Mvc
         [HttpPost]
         public virtual async Task<IActionResult> EditAsync(MachinesEditViewModel machine)
         {
-            var dt = machine.ToModel();          
+
+            var dt = machine.ToModel();
             var result = await _manager.UpdateAsync(dt);
 
             if (result.Succeeded)
@@ -138,14 +161,6 @@ namespace HD.Station.Feature.Mvc
 
         }
 
-        [HttpGet]
-        public virtual async Task<IActionResult> GetChildMachinesAsync(Guid? id)
-        {
-            var data = (await _manager.QueryAsync()).Where(c => c.ParentId == id)
-                .Select(c => new MachinesViewModel(c)).ToList();
-
-            return Json(data);
-        }
-
+       
     }
 }

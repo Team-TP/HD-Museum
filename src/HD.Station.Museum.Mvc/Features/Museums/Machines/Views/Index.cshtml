@@ -1,8 +1,6 @@
 ﻿@model MachinesIndexViewModel
 @using System.Dynamic;
-@{
-    ViewData["Title"] = Localizer["Storage Location"];
-}
+@{ ViewData["Title"] = Localizer["Storage Location"]; }
 
 <div class="flextable table-actions  p-l-0">
     <div class="flextable-item">
@@ -18,12 +16,10 @@
 <div id="quotaModal" class="modal fade" tabindex="-1" role="dialog">
 
 </div>
-@{
-    var properties = typeof(MachinesViewModel).GetProperties().OrderBy(p => p.GetCustomAttribute<GridDisplayAttribute>()?.Order ?? 999);
-    List<object> mockList = new List<object> { };
-    var groupable = false;
-    var groups = new List<object>();
-}
+@{ var properties = typeof(MachinesViewModel).GetProperties().OrderBy(p => p.GetCustomAttribute<GridDisplayAttribute>()?.Order ?? 999);
+                List<object> mockList = new List<object> { };
+                var groupable = false;
+                var groups = new List<object>(); }
 @(Html.Kendo()
     .Grid(mockList)
     .Name("grid")
@@ -90,8 +86,11 @@
         var delete = string.Format("<a class='btn btn-sm btn-danger-outline' href='{0}/#: Id #/Delete'><span class='icon icon-action-delete'></span></a>",
         baseUrl, Localizer["Delete"].Value);
 
+        var addChild = string.Format("<a class='btn btn-sm btn-primary-outline' data-toggle='modal' data-target='\\\\#createModal' data-parentId='#: Id #'><span class='icon icon-action-create'></span></a>",
+        baseUrl, Localizer["AddChild"].Value);
+
         columns
-        .Template("<div class='btn-group'>" + edit + details + delete + quotaBtn + "</div>")
+        .Template("<div class='btn-group'>" + edit + details + addChild  + delete  + "</div>")
         .HtmlAttributes(new { @class = "action-col" })
         .Width(350)
         .Title(" ");
@@ -160,12 +159,16 @@
 
         $(document).on('shown.bs.modal', '#createModal', function (event) {
             console.log("shown modal event", event);
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var parentId = button.attr('data-parentId');
+            console.log("ParentId:", parentId);
+            debugger
             var that = this;
             $(document).off('focusin.modal')
-            
+
             $.ajax({
                 /**/
-                url: '@Url.Action("Create")',
+                url: `@Url.Action("Create", new { id = Guid.Empty }).Replace(Guid.Empty.ToString(), "${parentId}")`,
                 /**/
                 type: "GET",
                 data: { layout: "_ModalLayout" },
@@ -182,7 +185,7 @@
             console.log("MachineID: ", machineId);
             var that = this;
             $(document).off('focusin.modal')
-            
+
             $.ajax({
                 /**/
                 url: '@Url.Action("Edit")',
@@ -195,6 +198,7 @@
             });
         });
 
+
         $("#createModal").on('hidden.bs.modal', function (event) {
             $('.div-modal').remove();
             console.log('HIDDEN MODAL EVENT', event);
@@ -203,7 +207,7 @@
             $('.div-modal').remove();
             console.log('HIDDEN MODAL EVENT', event);
         });
-    
+
     })
 </script>
 <script>
@@ -240,7 +244,7 @@
     </div>
 </div>
 
-<div id="editModal" class="modal fade  col-md-8 col-md-offset-2" tabindex="-1" role="dialog">
+<div id="editModal" class="modal fade  col-md-10 col-md-offset-1" tabindex="-1" role="dialog">
     <div class="modal-dialog w-full" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -266,8 +270,9 @@
     </div>
 </div>
 
+
 @section navigation {
-    <a icon-name="action-create" class="btn btn-primary-outline" data-toggle="modal" data-target="#createModal">
+    <a icon-name="action-create" class="btn btn-primary-outline" data-toggle="modal" data-target="#createModal" data-parentid=''>
         @Localizer[$"Create {typeof(Machines).DisplayName()}"]
     </a>
 }

@@ -48,7 +48,7 @@ namespace HD.Station.Feature.Models
 
         [Display]
         [GridDisplay]
-        public MachineType Stage { get; set; }
+        public StageType Stage { get; set; }
 
         [Display]
         [GridDisplay]
@@ -64,7 +64,7 @@ namespace HD.Station.Feature.Models
 
         public DateTimeOffset DateTest => MachineProduce.DateTest;
 
-        public MachineProduceType State => MachineProduce.State;
+        public StateType State => MachineProduce.State;
         [Display]
         [GridDisplay]
         public string Note => MachineProduce.Note;

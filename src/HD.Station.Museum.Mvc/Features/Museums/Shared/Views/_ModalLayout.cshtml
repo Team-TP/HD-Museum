@@ -6,10 +6,10 @@
 
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">@ViewData["Layout"]</h4>
+        <h4 class="modal-title">@ViewData["SubTitle"]</h4>
     </div>
     <div class="modal-body" style="display: flex">
-        <div class="content col-lg-10 col-lg-push-1 col-md-12">
+        <div class="content col-lg-8  col-md-12">
             @RenderBody()
         </div>
     </div>
@@ -23,13 +23,16 @@
             left: 0%;
         }
 
-        .col-lg-10 {
+        .col-lg-8 {
             width: auto;
         }
         body{
             background-color:darkgray;
         }
-    }
+        }
+        .modal-footer{
+            text-align:center;
+        }
 </style>
 @section Scripts {
     @RenderSection("scripts", required: false)

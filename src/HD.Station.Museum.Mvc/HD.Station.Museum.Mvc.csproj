@@ -15,14 +15,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Features\Museums\Categories\Views\CategoriesPartial.cshtml" />
+    <None Remove="Features\Museums\Machines\Views\_CreateEditMachineProducePartial.cshtml" />
+    <None Remove="Features\Museums\Machines\Views\_CreateEditMachineWareHousePartial.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HD.Station.Museum.Abstractions\HD.Station.Museum.Abstractions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Features\Museums\Machines\Views\" />
   </ItemGroup>
 
 </Project>

@@ -13,7 +13,7 @@ namespace HD.Station.Museum
 
         public DateTimeOffset DateOfManufacture { get; set; }
         public DateTimeOffset DateTest { get; set; }
-        public MachineProduceType State { get; set; }
+        public StateType State { get; set; }
         public string Note { get; set; }
         [JsonIgnore]
         public virtual Machines Machines { get; set; }

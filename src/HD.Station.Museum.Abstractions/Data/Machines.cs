@@ -16,7 +16,7 @@ namespace HD.Station.Museum
         public bool Disabled { get; set; }
 
         public Guid? ParentId { get; set; }
-        public MachineType Stage { get; set; }
+        public StageType Stage { get; set; }
         public int Amount { get; set; }
         public decimal Price { get; set; }
 

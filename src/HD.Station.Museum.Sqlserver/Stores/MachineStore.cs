@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,6 +37,23 @@ namespace HD.Station.Museum.Sqlserver.Stores
                                                     .FirstOrDefaultAsync();
             return d;
         }
+
+        public async Task<Machines> AddAsync(MachineComponentsViewModel model)
+        {
+            await DbContext.Database.BeginTransactionAsync(CancellationToken);
+            var machineEntry = await DbContext.AddAsync(model.Machine);
+
+            model.MachineProduce.MachineId = machineEntry.Entity.Id;
+            await DbContext.AddAsync(model.MachineProduce);
+
+            model.MachineWareHouse.MachineId = machineEntry.Entity.Id;
+            await DbContext.AddAsync(model.MachineWareHouse);
+
+            await DbContext.SaveChangesAsync(CancellationToken);
+            DbContext.Database.CommitTransaction();
+            return machineEntry.Entity;
+        }
+
 
         //public override async Task<OperationResult> UpdateAsync(Machines model)
         //{

@@ -25,9 +25,10 @@ namespace HD.Station.Feature.Models
                 Stage = machines.Stage;
                 Amount = machines.Amount;
                 Price = machines.Price;
-                MachineProduces = new MachineProduceEditViewModel(machines.MachineProduces);
-                MachineWarehouses = new MachineWareHouseEditViewModel(machines.MachineWarehouses);
-
+                //MachineProduce = machines.MachineProduces;
+                //MachineWarehouse = machines.MachineWarehouses;
+                //if (machines.MachineProduces != null) { MachineProduce = new MachineProduceEditViewModel(machines.MachineProduces); }
+                //if (machines.MachineWarehouses != null) { MachineWarehouse = new MachineWareHouseEditViewModel(machines.MachineWarehouses); }
             }
         }
 
@@ -40,10 +41,14 @@ namespace HD.Station.Feature.Models
         [Display]
         [GridDisplay]
         public string Description { get; set; }
+        [Display]
+        [GridDisplay]
         public bool Disabled { get; set; }
-
+        [Hidden]
         public Guid? ParentId { get; set; }
-        public MachineType Stage { get; set; }
+        [Display]
+        [GridDisplay]
+        public StageType Stage { get; set; }
         [Display]
         [GridDisplay]
         public int Amount { get; set; }
@@ -51,18 +56,13 @@ namespace HD.Station.Feature.Models
         [GridDisplay]
         public decimal Price { get; set; }
 
-        //public DateTimeOffset DateOfManufacture => MachineProduces.DateOfManufacture;
+        //public  MachineProduces MachineProduce { get; set; }
 
-        [Display]
-        [GridDisplay]
-        //public string Note => MachineProduces.Note;
+        //public  MachineWareHouses MachineWarehouse { get; set; }
 
-        public string Address => MachineWarehouses.Address;
+        //public MachineProduceEditViewModel MachineProduce { get; set; }
 
-        public virtual MachineProduceEditViewModel MachineProduces { get; set; }
-
-        public virtual MachineWareHouseEditViewModel MachineWarehouses { get; set; }
-
+        //public MachineWareHouseEditViewModel MachineWarehouse { get; set; }
 
 
         public override Machines ToModel()
@@ -77,8 +77,6 @@ namespace HD.Station.Feature.Models
                 Stage = Stage,
                 Amount = Amount,
                 Price = Price,
-                MachineProduces = MachineProduces.ToModel(),
-                MachineWarehouses = MachineWarehouses.ToModel()
             };
             return machines;
         }

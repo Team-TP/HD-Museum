@@ -1,0 +1,98 @@
+﻿@model MachineCreateViewModel
+
+<fieldset name="Machine" class="MachineCss">
+    <legend>@Localizer["Machine"]:</legend>
+
+    @Html.HiddenFor(m => m.Machine.Id)
+    <div class="row">
+        <div class="col-md-5">
+            <div class="form-group">
+                <div class="col-md-3">
+                    <label for="Name" class="control-label">@Localizer["Name"]:</label>
+                </div>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.Machine.Name, new { @class = "form-control" })
+                    <span class="field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3">
+                    <label for="Description" class="control-label">@Localizer["Description"]:</label>
+                </div>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.Machine.Description, new { @class = "form-control" })
+                    <span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>
+                </div>
+            </div>           
+
+            <div class="form-group">
+                <div class="col-md-3">
+                    <label for="Disabled" class="control-label">@Localizer["Disabled"]:</label>
+                </div>
+                <div class="col-md-8">
+                    <div class="checkbox custom-control custom-checkbox">
+                        <label>
+                            <input type="hidden" name="Disabled" value="false">
+                            @Html.CheckBoxFor(m => m.Machine.Disabled, new { @class = "control-center" })
+                            <span class="custom-control-indicator"></span>
+                        </label>
+                    </div>
+                    <span class="field-validation-valid" data-valmsg-for="Disabled " data-valmsg-replace="true"></span>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-5">
+            @Html.HiddenFor(m => m.Machine.ParentId)
+            <div class="form-group">
+                <div class="col-md-3">
+                    <label for="Amount" class="control-label">@Localizer["Amount"]:</label>
+                </div>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.Machine.Amount, new { @class = "form-control" })
+                    <span class="field-validation-valid" data-valmsg-for="Amount" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3">
+                    <label for="Price" class="control-label">@Localizer["Price"]:</label>
+                </div>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.Machine.Price, new { @class = "form-control" })
+                    <span class="field-validation-valid" data-valmsg-for="Price" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3">
+                    <label for="Stage" class="control-label">@Localizer["Stage"]:</label>
+                </div>
+                <div class="col-md-8">
+                    <select asp-for="Machine.Stage" asp-items="@EnumUtil.GetValues(typeof(StageType)).ToValueOptions().Select(o => new SelectListItem { Text = o.Text, Value = o.Value })" class="form-control"></select>
+                    <span class="field-validation-valid" data-valmsg-for="Stage" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group" style="display: none">
+                <div class="col-md-3">
+                    
+                </div>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.Machine.Price, new { @class = "form-control" })
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</fieldset>
+<style>
+    .MachineCss{
+        margin-bottom:50px;
+    }
+</style>

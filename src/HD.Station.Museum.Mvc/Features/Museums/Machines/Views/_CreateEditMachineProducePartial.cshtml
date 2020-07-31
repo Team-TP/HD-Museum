@@ -1,0 +1,53 @@
+﻿@model MachineCreateViewModel
+
+    <fieldset name="MachineProduce" class="produceCss">
+        <legend>@Localizer["Machine Produce"]:</legend>
+
+        @Html.HiddenFor(m => m.MachineProduce.MachineId)
+        <div class="form-group">
+            <div class="col-md-3">
+                <label for="DateOfManufacture" class="control-label">@Localizer["DateOfManufacture"]:</label>
+            </div>
+            <div class="col-md-5">
+                @Html.TextBoxFor(m => m.MachineProduce.DateOfManufacture, new { @class = "form-control" })
+                <span class="field-validation-valid" data-valmsg-for="DateOfManufacture" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-3">
+                <label for="DateTest" class="control-label">@Localizer["DateTest"]:</label>
+            </div>
+            <div class="col-md-5">
+                @Html.TextBoxFor(m => m.MachineProduce.DateTest, new { @class = "form-control" })
+                <span class="field-validation-valid" data-valmsg-for="DateTest" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-3">
+                <label for="State" class="control-label">@Localizer["State"]:</label>
+            </div>
+            <div class="col-md-5">
+                <select asp-for="MachineProduce.State" asp-items="@EnumUtil.GetValues(typeof(StateType)).ToValueOptions().Select(o => new SelectListItem { Text = o.Text, Value = o.Value })" class="form-control"></select>
+                <span class="field-validation-valid" data-valmsg-for="State" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-3">
+                <label for="Note" class="control-label">@Localizer["Note"]:</label>
+            </div>
+            <div class="col-md-5">
+                @Html.TextBoxFor(m => m.MachineProduce.Note, new { @class = "form-control" })
+                <span class="field-validation-valid" data-valmsg-for="Note" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+
+    </fieldset>
+    <style>
+        .produceCss {
+            padding-left: 100px;
+        }
+    </style>

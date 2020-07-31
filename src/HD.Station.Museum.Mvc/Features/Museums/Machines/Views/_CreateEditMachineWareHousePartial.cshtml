@@ -1,0 +1,54 @@
+﻿@model MachineCreateViewModel
+
+    <fieldset name="MachineWareHouse" class="WareHouseCss">
+        <legend>@Localizer["Machine WareHouse"]:</legend>
+
+        @Html.HiddenFor(m => m.MachineWareHouse.MachineId)
+        <div class="form-group">
+            <div class="col-md-3">
+                <label for="Address" class="control-label">@Localizer["Address"]:</label>
+            </div>
+            <div class="col-md-5">
+                @Html.TextBoxFor(m => m.MachineWareHouse.Address, new { @class = "form-control" })
+                <span class="field-validation-valid" data-valmsg-for="Address" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-3">
+                <label for="Note" class="control-label">@Localizer["Note"]:</label>
+            </div>
+            <div class="col-md-5">
+                @Html.TextBoxFor(m => m.MachineWareHouse.Note, new { @class = "form-control" })
+                <span class="field-validation-valid" data-valmsg-for="Note" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-3">
+                <label for="Phone" class="control-label">@Localizer["Phone"]:</label>
+            </div>
+            <div class="col-md-5">
+                @Html.TextBoxFor(m => m.MachineWareHouse.Phone, new { @class = "form-control" })
+                <span class="field-validation-valid" data-valmsg-for="Phone" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-3">
+                <label for="Email" class="control-label">@Localizer["Email"]:</label>
+            </div>
+            <div class="col-md-5">
+                @Html.TextBoxFor(m => m.MachineWareHouse.Email, new { @class = "form-control" })
+                <span class="field-validation-valid" data-valmsg-for="Email" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+
+    </fieldset>
+<style>
+    .WareHouseCss {
+        padding-left: 100px;
+    }
+</style>

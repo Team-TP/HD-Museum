@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection.PortableExecutable;
 using System.Text;
 
 namespace HD.Station.Feature.Models
@@ -23,24 +24,22 @@ namespace HD.Station.Feature.Models
                 Email = machineWareHouses.Email;
             }
         }
+
         [Hidden]
         public Guid MachineId { get => base.Id; set => base.Id = value; }
-
         [Display]
         [GridDisplay]
         public string Address { get; set; }
-
         [Display]
         [GridDisplay]
         public string Note { get; set; }
-
         [Display]
         [GridDisplay]
         public string Phone { get; set; }
-
         [Display]
         [GridDisplay]
         public string Email { get; set; }
+
 
 
         public override MachineWareHouses ToModel()
@@ -51,8 +50,8 @@ namespace HD.Station.Feature.Models
                 Address = Address,
                 Note = Note,
                 Phone = Phone,
-                Email = Email
-            };
+                Email = Email,
+        };
             return machineWareHouses;
         }
     }

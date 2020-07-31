@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HD.Station.Museum
 {
-    public enum MachineType
+    public enum StageType
     {
         Good,
         Error

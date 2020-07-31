@@ -1,75 +1,58 @@
 ﻿@model MachinesEditViewModel
 @{ ViewData["Title"] = Localizer["Storage Location"];
-    ViewData["SubTitle"] = Localizer["Edit"];
-    var message = ViewBag.Notice as NoticeModel;
-    var path = ViewData["path"] != null ? ViewData["path"] : "";
-    var labelClass = ViewData["labelClass"] != null ? ViewData["labelClass"] : "col-md-3";
-    var fieldClass = ViewData["fieldClass"] != null ? ViewData["fieldClass"] : "col-md-8";
-    var groupClass = ViewData["groupClass"] != null ? ViewData["groupClass"] : "form-group"; }
+                ViewData["SubTitle"] = Localizer["Edit"];
+                var message = ViewBag.Notice as NoticeModel;
+                var path = ViewData["path"] != null ? ViewData["path"] : "";
+                var labelClass = ViewData["labelClass"] != null ? ViewData["labelClass"] : "col-md-3";
+                var fieldClass = ViewData["fieldClass"] != null ? ViewData["fieldClass"] : "col-md-8";
+                var groupClass = ViewData["groupClass"] != null ? ViewData["groupClass"] : "form-group"; }
 
 <div class="hr-divider">
     <h3 class="hr-divider-content hr-divider-heading">
-        @ViewData["Title"] 
+        @ViewData["Title"]
     </h3>
 </div>
 <div notice-for="message"></div>
 <div class="content col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
-    <form name="Edit" asp-action="Edit" id="formEdit" class="form-horizontal" method="post">
+    <form name="Edit" id="formEdit" asp-route-id="@ViewBag.Id" asp-action="Edit" class="form-horizontal">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <fieldset>
-            @{ var mode = ViewData["__mode"] != null ? (FormMode)ViewData["__mode"] : FormMode.Edit;
-
-                foreach (var member in Model.GetType().DisplayProperties())
-                {
-                    string mname = member.Name;
-                    var tag = member.GetInputType();
-                    if (member.IsHidden())
-                    {
-                        @Html.Hidden(mname);
-                    }
-                    else
-                    {
-                        <div class="@groupClass">
-                            <div class="@labelClass">
-                                <label class="control-label" m-for="@mname" m-parent="@path"></label>
-                            </div>
-                            <div class="@fieldClass">
-                                @{ if (tag == FormInputType.Select)
-                                    {
-                                        var value = member.GetOrCreateInstance((object)Model);
-                                        var promt = member.GetPrompt();
-                                        promt = promt ?? "Select one item";
-                                        <select data-value="@value" m-for="@mname" m-parent="@path" m-items="@FormHelper.GetSelectList(Model, member)" m-mode="@mode">
-                                            <option value="">@Localizer[promt]</option>
-                                        </select> }
-                                        else if (tag == FormInputType.Multiselect)
-                                        {
-                                            <select m-for="@mname" m-parent="@path" m-items="@FormHelper.GetSelectList(Model, member)" m-multiple="true" m-mode="@mode"></select> }
-                                        else if (tag == FormInputType.Textarea)
-                                        {
-                                            var value = member.TryGetValue((object)Model);
-                                            <textarea m-for="@mname" m-parent="@path" m-mode="@mode">@value</textarea> }
-                                        else
-                                        {
-                                            <input m-for="@mname" m-parent="@path" m-datalist="@FormHelper.GetInputDatalist(Model, member)" m-mode="@mode" /> 
-                                        } 
-                                    }
-                                        <span m-validation-for="@mname" m-parent="@path" class="text-danger"></span>
-                            </div>
-                        </div> 
-                    }
-                }                
-         }
+            @{ Html.RenderPartialAsync("_CreateEditPartial"); }
         </fieldset>
         <hr />
     </form>
 </div>
+
+@*<script>
+    require(["jquery", "js/hd/FormHelper.js", 'kendo.all.min', "kendo.aspnetmvc.min", "toolkit"], function ($, formHelper) {
+        _formHelper = formHelper;
+
+
+        $('#editBtn').click(function (e) {
+
+        var mc = _formHelper.serializeObject('#formEdit');
+            console.log("Machines: ", mc);
+            debugger
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Edit")',
+            data: { machine: mc },
+            success: function (data) {
+                   console.log('susseeded');
+                }
+            });
+            console.log(data);
+            debugger
+        });
+    })
+
+</script>*@
 @section actions {
     <div class="modal-actions col-md-offset-3 col-md-9">
         <button icon-name="action-cancel" name="close" class="btn btn-default" data-dismiss="modal">
             @Localizer["Close"]
         </button>
-        <button icon-name="action-save" name="submit" class="btn btn-success" form="formEdit">
+        <button icon-name="action-save" name="submit" form="formEdit" class="btn btn-success" id="editBtn">
             @Localizer["Edit"]
         </button>
     </div>
