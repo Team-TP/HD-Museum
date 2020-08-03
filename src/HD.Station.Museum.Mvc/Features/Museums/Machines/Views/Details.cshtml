@@ -12,13 +12,13 @@
 
 <div notice-for="message"></div>
 
-<div class="content col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+<div class="content col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
     <div class="form-horizontal">
         <fieldset class="col-lg-12 col-md-12">
             <legend>@Localizer["Childs Machines"]</legend>
             <table class="table  table-bordered">
                 <tr>
-                    <th scope="col" style="width:20%">@Localizer["Id"]</th>
+                    <th scope="col" style="width:20%">@Localizer["Parent"]</th>
                     <th scope="col" style="width:20%">@Localizer["Name"]</th>
                     <th scope="col" style="width:20%">@Localizer["Description"]</th>
                     <th scope="col" style="width:20%">@Localizer["Amount"]</th>
@@ -27,81 +27,64 @@
 
                 @{ foreach (var model in Model.ChildMachines)
                     {
-                        var id = model.Id;
+                        //var parent = model.ParentMachine.Name;
                         var name = model.Name;
                         var description = model.Description;
                         var amount = model.Amount;
+                        var id = model.Id;
 
-        <tr>
-            <td>@id</td>
-            <td>@name</td>
-            <td>@description</td>
-            <td>@amount</td>
-            <td style="text-align:center">
-                <a title="@Localizer["Edit"]" data-toggle='modal' data-target='#editModal' data-childid='@id'  class="btn btn-sm btn-primary-outline">
-                    <span class='icon icon-action-edit'></span>
-                </a>
-                <a href="@Url.Action("Index", new { id = id })" title="@Localizer["Detail"]" class="btn btn-sm btn-info-outline">
-                    <span class='icon icon-action-detail'></span>
-                </a>
-                <a asp-action="Delete" title="@Localizer["Delete"]" asp-route-id="@id" class="btn btn-sm btn-danger-outline">
-                    <span class='icon icon-action-delete'></span>
-                </a>
-            </td>
-        </tr> } }
+                            <tr>
+                                <td>@id</td>
+                                <td>@name</td>
+                                <td>@description</td>
+                                <td>@amount</td>
+                                <td style="text-align:center">
+                                    <a title="@Localizer["Edit"]" data-toggle='modal' data-target='#editModal' data-childid='@id'  class="btn btn-sm btn-primary-outline">
+                                        <span class='icon icon-action-edit'></span>
+                                    </a>
+                                    <a href="@Url.Action("Index", new { id = id })" title="@Localizer["Detail"]" class="btn btn-sm btn-info-outline">
+                                        <span class='icon icon-action-detail'></span>
+                                    </a>
+                                    <a asp-action="Delete" title="@Localizer["Delete"]" asp-route-id="@id" class="btn btn-sm btn-danger-outline">
+                                        <span class='icon icon-action-delete'></span>
+                                    </a>
+                                </td>
+                            </tr> } 
+                    }
             </table>
-            @*<div class="form-group">
-                        <div class="form-actions col-md-offset-4 col-md-8 col-lg-offset-4 col-lg-8">
-                            @if (ViewBag.ParentId == null)
-                            {
-                <a icon-name="action-create" data-toggle='modal' data-target='#createModal' data-parentid='@ViewBag.Id' class="btn btn-primary-outline">
-                    @Localizer["Add Child Machine"]
-                </a>}
-                        </div>
-                    </div>*@
+            
         </fieldset>
 
         <hr />
 
-        <div class="form-group">
-            <div class="form-actions col-md-offset-3 col-md-9">
-                <a asp-action="Index" icon-name="action-back" asp-route-id="" class="btn btn-default">
-                    @Localizer["Back"]
-                </a>
-            </div>
-        </div>
-
     </div>
 </div>
 
-@*<script>
+<script>
     require(["jquery", 'kendo.grid.min', 'kendo.aspnetmvc.min','kendo.all.min'], function ($) {
         // put deferred grid javascript inside require
         @Html.Kendo().DeferredScriptsFor("grid", false);
 
 
-        $(document).on('shown.bs.modal', '#editModal', function (event) {
+        $(document).on('shown.bs.modal', '#createModal', function (event) {
             console.log("shown modal event", event);
             var button = $(event.relatedTarget); // Button that triggered the modal
-            var machineId = button.attr('data-childid');
-            console.log("Id machineChild: ", machineId);
-            debugger
             var that = this;
             $(document).off('focusin.modal')
 
             $.ajax({
                 /**/
-                url: '@Url.Action("Edit")',
+                url: '@Url.Action("Create")',
                 /**/
                 type: "GET",
-                data: { layout: "_ModalLayout", id: machineId },
+                data: { layout: "_ModalLayout" },
                 success: function (data) {
                     $(".modal-content", that).html(data);
                 }
             });
         });
 
-        $("#editModal").on('hidden.bs.modal', function (event) {
+        $("#createModal").on('hidden.bs.modal', function (event) {
             $('.div-modal').remove();
             console.log('HIDDEN MODAL EVENT', event);
         });
@@ -109,11 +92,11 @@
     })
 </script>
 
-<div id="editModal" class="modal fade  col-md-8 col-md-offset-2" tabindex="-1" role="dialog">
+<div id="createModal" class="modal fade  col-md-8 col-md-offset-2" tabindex="-1" role="dialog">
     <div class="modal-dialog w-full" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4>@Localizer["Edit Machine"]</h4>
+                <h4>@Localizer["Create New Machine"]</h4>
             </div>
             <div class="modal-body">
                 <div class="spinner overlay-loading">
@@ -133,19 +116,13 @@
             </div>
         </div>
     </div>
-</div>*@
+</div>
 
-@*@section navigation {
-        <a asp-action="Edit" icon-name="action-edit" asp-route-id="@ViewBag.Id" class="btn btn-primary-outline">
-            @Localizer["Edit"]
-        </a>
-        <a asp-action="Delete" icon-name="action-delete" asp-route-id="@ViewBag.Id" class="btn btn-danger-outline">
-            @Localizer["Delete"]
-        </a>
-        <a asp-action="Create" icon-name="action-create" asp-route-id="" class="btn btn-primary-outline">
-            @Localizer["Create"]
+@section navigation {
+        <a asp-action="Create" icon-name="action-create" data-toggle="modal" data-target="#createModal" asp-route-id="" class="btn btn-primary-outline">
+            @Localizer["CreateChild"]
         </a>
         <a asp-action="Index" asp-route-id="" icon-name="action-back" class="btn btn-default-outline">
             @Localizer["Back"]
         </a>
-    }*@
+    }

@@ -60,15 +60,15 @@ namespace HD.Station.Feature.Mvc
         {
             ViewData["Layout"] = layout == "_" ? "" : layout;
             var machines = new MachinesEditViewModel(null);
-            if (id == Guid.Empty)
+
+            if(id == Guid.Empty)
             {
-                ViewBag.Id = null;
+                machines.ParentId = null;
             }
             else
             {
-                ViewBag.Id = id;
-            }
-            machines.ParentId = id;
+                machines.ParentId = id;
+            }    
             var model = new MachineCreateViewModel
             {
                 Machine = machines,
@@ -78,17 +78,9 @@ namespace HD.Station.Feature.Mvc
             return View(model);
         }
         [HttpPost]
-        public virtual async Task<IActionResult> CreateAsync(MachineComponentsViewModel model/*, IEnumerable<Guid> parentIds*/)
+        public virtual async Task<IActionResult> CreateAsync(MachineComponentsViewModel model)
         {
-            //var machines = model.ToModel();
-            //if (parentIds.Any())
-            //{
-            //    machines.ParentId = parentIds.First();
-            //}
-            //else
-            //{
-            //    machines.ParentId = null;
-            //}
+
             var (state, edit) = await _manager.AddAsync(model);
             //return RedirectToAction("Details", new { id = edit.Id });
             return RedirectToAction("Index");
@@ -103,7 +95,7 @@ namespace HD.Station.Feature.Mvc
         [HttpGet]
         public virtual async Task<IActionResult> DeleteAsync(Guid id)
         {
-            var (state, viewItem) = await _manager.ReadByIdAsync(id);
+            var (state, viewItem) = await _manager.ReadMachineByIdAsync(id);
             var model = new MachinesViewModel(viewItem);
             ViewBag.Id = id;
             return View(model);

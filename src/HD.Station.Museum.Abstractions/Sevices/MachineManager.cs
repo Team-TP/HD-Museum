@@ -41,5 +41,23 @@ namespace HD.Station.Museum.Sevices
                 return (OperationResult.Failed(ex), null);
             }
         }
+        public override async Task<OperationResult> DeleteByIdAsync(Guid id)
+        {
+            try
+            {
+                var machine = await _store.GetByIdAsync(id);
+                var authResult = await AuthorizeAsync(machine, Operations.Delete);
+                if (!authResult.Succeeded)
+                {
+                    return authResult;
+                }
+                return await _store.DeleteByIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return (OperationResult.Failed(ex));
+            }
+        }
+
     }
 }

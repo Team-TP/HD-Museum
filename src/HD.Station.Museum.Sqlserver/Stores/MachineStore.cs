@@ -54,7 +54,35 @@ namespace HD.Station.Museum.Sqlserver.Stores
             return machineEntry.Entity;
         }
 
-
+        public override async Task<OperationResult> DeleteByIdAsync(Guid id)
+        {
+            try
+            {
+                await DbContext.Database.BeginTransactionAsync(CancellationToken);
+                var machine = await DbContext.Set<Machines>().Include(a => a.MachineProduces)
+                                                        .Include(a => a.MachineWarehouses)
+                                                        .Include(a => a.ChildrenMachine)
+                                                        .Where(a => a.Id == id)
+                                                        .FirstAsync();
+                if (machine.MachineProduces != null)
+                {
+                    DbContext.Remove(machine.MachineProduces);
+                }
+                if (machine.MachineWarehouses != null)
+                {
+                    DbContext.Remove(machine.MachineWarehouses);
+                }
+                DbContext.Remove(machine);
+                await DbContext.SaveChangesAsync(CancellationToken);
+                DbContext.Database.CommitTransaction();
+                return OperationResult.Success;
+            }
+            catch (Exception ex)
+            {
+                DbContext.Database.RollbackTransaction();
+                return (OperationResult.Failed(ex));
+            }
+        }
         //public override async Task<OperationResult> UpdateAsync(Machines model)
         //{
         //    var entry = DbContext.Update(model);
