@@ -64,6 +64,24 @@ namespace HD.Station.Museum.Sqlserver.Stores
                                                         .Include(a => a.ChildrenMachine)
                                                         .Where(a => a.Id == id)
                                                         .FirstAsync();
+                var machineChild = DbContext.Set<Machines>().Include(a => a.MachineProduces)
+                                                        .Include(a => a.MachineWarehouses)
+                                                        .Where(a => a.ParentId == id);
+                if(machineChild.Count() > 0)
+                {
+                    foreach( var child in machineChild)
+                    {
+                        if(child.MachineProduces != null)
+                        {
+                            DbContext.Remove(machine.MachineProduces);
+                        }
+                        if (machine.MachineWarehouses != null)
+                        {
+                            DbContext.Remove(machine.MachineWarehouses);
+                        }
+                        DbContext.Remove(child);
+                    }
+                }
                 if (machine.MachineProduces != null)
                 {
                     DbContext.Remove(machine.MachineProduces);
