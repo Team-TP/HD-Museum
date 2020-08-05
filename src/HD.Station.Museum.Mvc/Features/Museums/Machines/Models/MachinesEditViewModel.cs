@@ -27,8 +27,8 @@ namespace HD.Station.Feature.Models
                 Price = machines.Price;
                 //MachineProduce = machines.MachineProduces;
                 //MachineWarehouse = machines.MachineWarehouses;
-                //if (machines.MachineProduces != null) { MachineProduce = new MachineProduceEditViewModel(machines.MachineProduces); }
-                //if (machines.MachineWarehouses != null) { MachineWarehouse = new MachineWareHouseEditViewModel(machines.MachineWarehouses); }
+                if (machines.MachineProduces != null) { MachineProduce = new MachineProduceEditViewModel(machines.MachineProduces); }
+                if (machines.MachineWarehouses != null) { MachineWarehouse = new MachineWareHouseEditViewModel(machines.MachineWarehouses); }
             }
         }
 
@@ -56,13 +56,13 @@ namespace HD.Station.Feature.Models
         [GridDisplay]
         public decimal Price { get; set; }
 
-        //public  MachineProduces MachineProduce { get; set; }
+        //public MachineProduces MachineProduce { get; set; }
 
-        //public  MachineWareHouses MachineWarehouse { get; set; }
+        //public MachineWareHouses MachineWarehouse { get; set; }
 
-        //public MachineProduceEditViewModel MachineProduce { get; set; }
+        public MachineProduceEditViewModel MachineProduce { get; set; }
 
-        //public MachineWareHouseEditViewModel MachineWarehouse { get; set; }
+        public MachineWareHouseEditViewModel MachineWarehouse { get; set; }
 
 
         public override Machines ToModel()
@@ -77,6 +77,8 @@ namespace HD.Station.Feature.Models
                 Stage = Stage,
                 Amount = Amount,
                 Price = Price,
+                MachineProduces = MachineProduce?.ToModel(),
+                MachineWarehouses = MachineWarehouse?.ToModel()
             };
             return machines;
         }

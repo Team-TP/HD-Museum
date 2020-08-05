@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HD.Station.Museum;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,22 +12,39 @@ namespace HD.Station.Feature.Models
         public MachineWareHouseEditViewModel MachineWareHouse { get; set; }
 
 
-        //public Machines ToModel()
-        //{
-        //    return new Machines
+        //public MachineCreateViewModel(Machines model) 
+        //{ 
+        //    if(model != null)
         //    {
-        //        Id = Machine.Id,
-        //        Name = Machine.Name,
-        //        Description = Machine.Description,
-        //        Disabled = Machine.Disabled,
-        //        ParentId = Machine.ParentId,
-        //        Stage = Machine.Stage,
-        //        Amount = Machine.Amount,
-        //        Price = Machine.Price,
-        //        MachineProduces = MachineProduce?.ToModel(),
-        //        MachineWarehouses = MachineWareHouse?.ToModel()
-        //    };
+        //        Machine = new MachinesEditViewModel(model);
+        //        //Machine.Id = model.Id;
+        //        //Machine.Name = model.Name;
+        //        //Machine.Description = model.Description;
+        //        //Machine.Disabled = model.Disabled;
+        //        //Machine.Amount = model.Amount;
+        //        //Machine.Stage = model.Stage;
+        //        //Machine.Price = model.Price;
+        //        if (model.MachineProduces != null) { MachineProduce = new MachineProduceEditViewModel(model.MachineProduces); }
+        //        if (model.MachineWarehouses != null) { MachineWareHouse = new MachineWareHouseEditViewModel(model.MachineWarehouses); }
+        //    }
         //}
+
+        public Machines ToModel()
+        {
+            return new Machines
+            {
+                Id = Machine.Id,
+                Name = Machine.Name,
+                Description = Machine.Description,
+                Disabled = Machine.Disabled,
+                ParentId = Machine.ParentId,
+                Stage = Machine.Stage,
+                Amount = Machine.Amount,
+                Price = Machine.Price,
+                MachineProduces = MachineProduce?.ToModel(),
+                MachineWarehouses = MachineWareHouse?.ToModel()
+            };
+        }
 
 
     }

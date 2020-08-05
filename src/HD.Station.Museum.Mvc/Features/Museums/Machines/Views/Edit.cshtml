@@ -1,60 +1,227 @@
-﻿@model MachinesEditViewModel
-@{ ViewData["Title"] = Localizer["Storage Location"];
-                ViewData["SubTitle"] = Localizer["Edit"];
-                var message = ViewBag.Notice as NoticeModel;
-                var path = ViewData["path"] != null ? ViewData["path"] : "";
-                var labelClass = ViewData["labelClass"] != null ? ViewData["labelClass"] : "col-md-3";
-                var fieldClass = ViewData["fieldClass"] != null ? ViewData["fieldClass"] : "col-md-8";
-                var groupClass = ViewData["groupClass"] != null ? ViewData["groupClass"] : "form-group"; }
+﻿@model MachineCreateViewModel
+@{ ViewData["Title"] = Localizer["Edit Machine"];
+    ViewData["SubTitle"] = Localizer["Edit Machine"];
+    var message = ViewBag.Notice as NoticeModel;
+    var path = ViewData["path"] != null ? ViewData["path"] : "";
+    var name = ViewData["name"] != null ? ViewData["name"] : ""; }
+@*var groupClass = ViewData["groupClass"] != null ? ViewData["groupClass"] : "form-group";
+    var labelClass = ViewData["labelClass"] != null ? ViewData["labelClass"] : "col-md-3";
+    var fieldClass = ViewData["fieldClass"] != null ? ViewData["fieldClass"] : "col-md-8"; }*@
 
-<div class="hr-divider">
-    <h3 class="hr-divider-content hr-divider-heading">
-        @ViewData["Title"]
-    </h3>
-</div>
+
+
 <div notice-for="message"></div>
+@if (Layout != "_ModalLayout")
+{
 <div class="content col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
-    <form name="Edit" id="formEdit" asp-route-id="@ViewBag.Id" asp-action="Edit" class="form-horizontal">
+    <form id="machineEditForm" name="Edit" asp-action="Edit" class="form-horizontal">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <fieldset>
-            @{ Html.RenderPartialAsync("_CreateEditPartial"); }
-        </fieldset>
-        <hr />
+        @{await Html.RenderPartialAsync("_CreateEditMachinePartial", Model);}
+        @{await Html.RenderPartialAsync("_CreateEditMachineProducePartial", Model);}
+        @{await Html.RenderPartialAsync("_CreateEditMachineWareHousePartial", Model);}
+
+    </form>
+    <button type="submit" formtarget="machineEditForm" class="btn btn-default">@Localizer["Save"]</button>
+
+</div>
+                @section navigation {
+
+                    <a asp-action="Index" asp-route-id="" icon-name="action-back" class="btn btn-default-outline">
+                        @Localizer["Back"]
+                    </a>
+                } }
+            else
+            {
+<div class="container">
+    <div class="row form-group">
+        <div class="col-md-8 col-md-offset-1 setup-panel">
+            <div class="stepwizard-step">
+                <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+                    <li class="active">
+                        <a href="#step-1">
+                            <p class="number">1</p>
+                            <h4 class="list-group-item-heading">Machine</h4>
+                            @* <h4 class="list-group-item-text">@Localizer["Machine"]</h4>*@
+                        </a>
+                    </li>
+                    <li class="disable">
+                        <a href="#step-2">
+                            <p class="number">2</p>
+                            <h4 class="list-group-item-heading">Machine Produce</h4>
+                            @*<h4 class="list-group-item-text">@Localizer["Machine Produce"]</h4>*@
+                        </a>
+                    </li>
+                    <li class="disable">
+                        <a href="#step-3">
+                            <p class="number">3</p>
+                            <h4 class="list-group-item-heading">Machine WareHouse</h4>
+                            @*<h4 class="list-group-item-text">@Localizer["Machine WareHouse"]</h4>*@
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <form id="machineEditForm" name="Edit" asp-action="Edit" class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="setup-content active" id="step-1">
+            <div class="">
+                @{await Html.RenderPartialAsync("_CreateEditMachinePartial", Model);}
+            </div>
+        </div>
+
+        <div class="setup-content" id="step-2">
+            <div class="">
+                @{await Html.RenderPartialAsync("_CreateEditMachineProducePartial", Model);}
+            </div>
+        </div>
+
+        <div class="setup-content" id="step-3">
+            <div class="">
+                @{await Html.RenderPartialAsync("_CreateEditMachineWareHousePartial", Model);}
+            </div>
+        </div>
     </form>
 </div>
 
-@*<script>
-    require(["jquery", "js/hd/FormHelper.js", 'kendo.all.min', "kendo.aspnetmvc.min", "toolkit"], function ($, formHelper) {
-        _formHelper = formHelper;
+<style>
 
+    .thumbnail {
+        border: none;
+        background-color: rgba(200, 200, 200, 0.2);
+        padding: 5px;
+    }
 
-        $('#editBtn').click(function (e) {
+    .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+        background-color: #f44336;
+        box-shadow: 0 16px 26px -10px rgba(244, 67, 54, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(244, 67, 54, 0.2);
+        transform: translate3d(-8px, 0px, 0px);
+        transition: all 0.5s cubic-bezier(0.30, 1.42, 0.79, 1) 0s;
+    }
 
-        var mc = _formHelper.serializeObject('#formEdit');
-            console.log("Machines: ", mc);
-            debugger
-        $.ajax({
-            type: "POST",
-            url: '@Url.Action("Edit")',
-            data: { machine: mc },
-            success: function (data) {
-                   console.log('susseeded');
-                }
-            });
-            console.log(data);
-            debugger
-        });
-    })
+        .nav-pills > li.active > a > h4 {
+            padding-top: 4px;
+            color: whitesmoke;
+        }
 
-</script>*@
-@section actions {
-    <div class="modal-actions col-md-offset-3 col-md-9">
+    .nav-pills > li > a > h4 {
+        padding-top: 4px;
+        color: whitesmoke;
+    }
+
+    .nav-pills > li > a:hover {
+        background-color: #80808069;
+        transform: translate3d(-8px, 0px, 0px);
+        transition: all 1s cubic-bezier(0.29, 1.42, 0.79, 1) 0s;
+    }
+
+    .number {
+        padding-top: 3px;
+        width: 25px;
+        height: 25px;
+        float: left;
+        border-radius: 50%;
+        background-color: whitesmoke;
+        color: #f44336;
+        font-weight: bold;
+    }
+
+    .nav-pills > li > a {
+        border-radius: 30px;
+    }
+</style>
+
+@section actions{
+
+    <div class="modal-actions col-md-12">
         <button icon-name="action-cancel" name="close" class="btn btn-default" data-dismiss="modal">
             @Localizer["Close"]
         </button>
-        <button icon-name="action-save" name="submit" form="formEdit" class="btn btn-success" id="editBtn">
-            @Localizer["Edit"]
+        <button id="prevBtn" icon-name="" class="btn btn-info prevBtn" style="background-color: #5bc0de; border:none">
+            @Localizer["Prev"]
+        </button>
+        <button id="nextBtn" icon-name="" class="btn btn-info nextBtn" style="background-color: #f44336; border: none">
+            @Localizer["Next"]
+        </button>
+
+        <button name="SubmitCreate" icon-name="action-save" form="machineEditForm" class="btn btn-success" type="submit" id="createBtn">
+            @Localizer["Save"]
         </button>
     </div>
 }
+<script>
+    $(document).ready(function () {
+        var indexnext = 1;
+        var indexprev = 3;
 
+        $('#createBtn').css('display', 'none');
+
+        var allWells = $('.setup-content'),
+            allNextBtn = $('.nextBtn'),
+            allPrevBtn = $('.prevBtn');
+
+        allWells.hide();
+
+
+        $('#nextBtn').click(function () {
+            console.log("click next");
+            $('a[href="#step-' + indexnext + '"]').trigger('click');
+
+        });
+        $('a[href="#step-1"').click(function () {
+            indexnext = 2;
+            indexprev = 3;
+            $('#prevBtn').css('display', 'none');
+        })
+        $('a[href="#step-2"').click(function () {
+            $('#prevBtn').css('display', 'inline-block');
+            $('#nextBtn').css('display', 'inline-block');
+            $('#createBtn').css('display', 'inline-block');
+            indexnext = 3;
+            indexprev = 1;
+        })
+        $('a[href="#step-3"').click(function () {
+            $('#prevBtn').css('display', 'inline-block');
+            $('#nextBtn').css('display', 'inline-block');
+            indexnext = 1;
+            indexprev = 2;
+            $('#createBtn').css('display', 'inline-block');
+        })
+
+
+        $('#prevBtn').click(function () {
+            console.log("click next");
+            $('a[href="#step-' + indexprev + '"]').trigger('click');
+
+        });
+
+
+
+    });
+
+    jQuery(document).ready(function () {
+
+        var navListItems = $('ul.setup-panel li a'),
+            allWells = $('.setup-content');
+
+        allWells.hide();
+
+        navListItems.click(function (e) {
+            e.preventDefault();
+            var $target = $($(this).attr('href')),
+                $item = $(this).closest('li');
+
+            if (!$item.hasClass('disabled')) {
+                navListItems.closest('li').removeClass('active');
+                $item.addClass('active');
+                allWells.hide();
+                $target.show();
+            }
+        });
+
+        $('ul.setup-panel li.active a').trigger('click');
+
+
+    });
+</script>}

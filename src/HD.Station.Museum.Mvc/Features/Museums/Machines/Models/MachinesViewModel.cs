@@ -26,10 +26,11 @@ namespace HD.Station.Feature.Models
                 Amount = machines.Amount;
                 Price = machines.Price;
                 ChildMachines = machines.ChildrenMachine;
-                MachineWareHouse = machines.MachineWarehouses;
-                MachineProduce = machines.MachineProduces;
-                //if (machines.MachineProduces != null) { MachineProduce = new MachineProduceViewModel(machines.MachineProduces); }
-                //if (machines.MachineWarehouses != null) { MachineWareHouse = new MachineWareHouseViewModel(machines.MachineWarehouses); }
+
+                MachineProduce = new MachineProduceViewModel(machines.MachineProduces);
+                MachineWareHouse = new MachineWareHouseViewModel(machines.MachineWarehouses);
+                //if (machines.MachineProduces != null) { MachineProduce = new MachineProduceEditViewModel(machines.MachineProduces); }
+                //if (machines.MachineWarehouses != null) { MachineWareHouse = MachineProduce }
 
             }
         }
@@ -62,30 +63,17 @@ namespace HD.Station.Feature.Models
         [GridDisplay]
         public DateTimeOffset DateOfManufacture => MachineProduce.DateOfManufacture;
 
-        public DateTimeOffset DateTest => MachineProduce.DateTest;
-
-        public StateType State => MachineProduce.State;
-        [Display]
-        [GridDisplay]
-        public string Note => MachineProduce.Note;
-
         [Display]
         [GridDisplay]
         public string Address => MachineWareHouse.Address;
-        public string NoteWH => MachineWareHouse.Note;
-
-        public string Phone => MachineWareHouse.Phone;
-        public string Email => MachineWareHouse.Email;
 
 
-        public virtual MachineProduces MachineProduce { get; set; }
+        //public MachineProduces MachineProduce { get; set; }
+        //public MachineWareHouses MachineWareHouse { get; set; }
 
-        public virtual MachineWareHouses MachineWareHouse { get; set; }
+        public MachineProduceViewModel MachineProduce { get; set; }
 
-
-        //public MachineProduceViewModel MachineProduce { get; set; }
-
-        //public MachineWareHouseViewModel MachineWareHouse { get; set; }
+        public MachineWareHouseViewModel MachineWareHouse { get; set; }
         public IEnumerable<Machines> ChildMachines { get; set; }
         public override Machines ToModel()
         {

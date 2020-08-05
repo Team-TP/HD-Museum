@@ -25,21 +25,38 @@ namespace HD.Station.Museum.Sevices
             var authorizeResult = await AuthorizeAsync(model, requirement);
             return (authorizeResult, model);
         }
-        public async Task<(OperationResult State, Machines Edit)> AddAsync(MachineComponentsViewModel model)
+        //public async Task<(OperationResult State, Machines Edit)> AddAsync(MachineComponentsViewModel model)
+        //{
+        //    try
+        //    {
+        //        var authResult = await AuthorizeAsync(model.Machine, Operations.Create);
+        //        if (!authResult.Succeeded)
+        //        {
+        //            return (authResult, null);
+        //        }
+        //        return (OperationResult.Success, await _store.AddAsync(model));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return (OperationResult.Failed(ex), null);
+        //    }
+        //}
+        public override async Task<OperationResult> UpdateAsync(Machines model)
         {
             try
             {
-                var authResult = await AuthorizeAsync(model.Machine, Operations.Create);
+                var authResult = await AuthorizeAsync(model, Operations.Update);
                 if (!authResult.Succeeded)
                 {
-                    return (authResult, null);
+                    return authResult;
                 }
-                return (OperationResult.Success, await _store.AddAsync(model));
+                return await _store.UpdateAsync(model);
             }
             catch (Exception ex)
             {
-                return (OperationResult.Failed(ex), null);
+                return (OperationResult.Failed(ex));
             }
+
         }
         public override async Task<OperationResult> DeleteByIdAsync(Guid id)
         {

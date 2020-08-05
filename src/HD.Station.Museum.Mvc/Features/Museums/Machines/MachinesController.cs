@@ -78,10 +78,10 @@ namespace HD.Station.Feature.Mvc
             return View(model);
         }
         [HttpPost]
-        public virtual async Task<IActionResult> CreateAsync(MachineComponentsViewModel model)
+        public virtual async Task<IActionResult> CreateAsync(MachineCreateViewModel model)
         {
-
-            var (state, edit) = await _manager.AddAsync(model);
+            var machine = model.ToModel();
+            var (state, edit) = await _manager.AddAsync(machine);
             //return RedirectToAction("Details", new { id = edit.Id });
             return RedirectToAction("Index");
         }
@@ -89,7 +89,12 @@ namespace HD.Station.Feature.Mvc
         public virtual async Task<IActionResult> DetailsAsync(Guid id)
         {
             var (state, viewItem) = await _manager.ReadMachineByIdAsync(id);
-            var model = new MachinesViewModel(viewItem);
+            //var machine = new MachinesViewModel(viewItem);
+            var model = new MachinesViewModel(viewItem)
+            {
+                MachineProduce = new MachineProduceViewModel(viewItem.MachineProduces),
+                MachineWareHouse = new MachineWareHouseViewModel(viewItem.MachineWarehouses)
+            };
             return View(model);
         }
         [HttpGet]
@@ -121,19 +126,52 @@ namespace HD.Station.Feature.Mvc
             };
             return View(new MachinesViewModel());
         }
-        [HttpGet]
+
         public virtual async Task<IActionResult> EditAsync(Guid id, string layout = "_")
         {
             ViewData["Layout"] = layout == "_" ? "" : layout;
             var (state, machine) = await _manager.ReadMachineByIdAsync(id);
-            return View(new MachinesEditViewModel(machine));
+            if (state.Succeeded)
+            {
+                if(machine == null)
+                {
+                    return NotFound();
+                }
+                var machines = new MachinesEditViewModel(machine);
+
+                //if (id == Guid.Empty)
+                //{
+                //    machines.ParentId = null;
+                //}
+                //else
+                //{
+                //    machines.ParentId = id;
+                //}
+                var model = new MachineCreateViewModel()
+                {
+                    Machine = machines,
+                    MachineProduce = new MachineProduceEditViewModel(machine.MachineProduces) { },
+                    MachineWareHouse = new MachineWareHouseEditViewModel(machine.MachineWarehouses) { }
+                };
+                return View(model);
+            }
+            else
+            {
+                ViewBag.Notice = AlertModel.Error(state.ToString());
+                return View();
+            }
+
+
+            //ViewData["Layout"] = layout == "_" ? "" : layout;
+            //var (state, machine) = await _manager.ReadMachineByIdAsync(id);
+            //return View(new MachinesEditViewModel(machine));
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> EditAsync(MachinesEditViewModel machine)
+        public virtual async Task<IActionResult> EditAsync(MachineCreateViewModel viewItem)
         {
 
-            var dt = machine.ToModel();
+            var dt = viewItem.ToModel();
             var result = await _manager.UpdateAsync(dt);
 
             if (result.Succeeded)
@@ -149,7 +187,7 @@ namespace HD.Station.Feature.Mvc
                 //return RedirectToAction("Details", new { id = dt.Id });
             }
             ViewBag.Notice = result.ToAlert();
-            return View(machine);
+            return View(viewItem);
 
         }
 

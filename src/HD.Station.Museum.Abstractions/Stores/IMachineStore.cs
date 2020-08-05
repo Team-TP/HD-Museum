@@ -9,6 +9,6 @@ namespace HD.Station.Museum.Stores
     public interface IMachineStore : IStore<Machines, Guid>
     {
         Task<Machines> ReadMachineByIdAsync(Guid id);
-        Task<Machines> AddAsync(MachineComponentsViewModel model);
+        //Task<Machines> AddAsync(MachineComponentsViewModel model);
     }
 }
