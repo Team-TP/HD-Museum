@@ -1,6 +1,6 @@
 ﻿@model MachineCreateViewModel
 
-    <fieldset name="MachineProduce" class="produceCss">
+    <fieldset name="MachineProduce" class="div-produce">
         <legend>@Localizer["Machine Produce"]:</legend>
 
         @Html.HiddenFor(m => m.MachineProduce.MachineId)
@@ -47,7 +47,7 @@
 
     </fieldset>
     <style>
-        .produceCss {
+        .div-produce {
             padding-left: 100px;
         }
     </style>

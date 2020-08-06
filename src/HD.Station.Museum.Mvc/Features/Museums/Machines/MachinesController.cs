@@ -20,12 +20,12 @@ namespace HD.Station.Feature.Mvc
         private IMachineManager _manager;
         private IMachineProduceManager _pmanager;
         private IMachineWareHouseManager _whmanager;
+        private ICategoryManager _cmanager;
 
-        public MachinesController(IMachineManager manager, IMachineProduceManager pmanager, IMachineWareHouseManager whmanager)
+        public MachinesController(IMachineManager manager, ICategoryManager cmanager)
         {
             _manager = manager;
-            _pmanager = pmanager;
-            _whmanager = whmanager;
+            _cmanager = cmanager;
 
         }
         [HttpGet("[area]/[controller]")]
@@ -191,6 +191,34 @@ namespace HD.Station.Feature.Mvc
 
         }
 
-       
+        //[HttpGet]
+        //public virtual async Task<IActionResult> GetCategoriesAsync(Guid? id)
+        //{
+
+        //    var data = (await _cmanager.QueryAsync()).Where(c => c.ParentId == id)
+        //        .Select(c => new CategoriesTreeModel(c)).ToList();
+
+        //    return Json(data);
+        //}
+        //public class CategoriesTreeModel
+        //{
+        //    public CategoriesTreeModel(Categories item)
+        //    {
+        //        Id = item.Id;
+        //        ParentId = item.ParentId;
+        //        Name = item.Name;
+        //        HasChildren = item.ChildrenCategory.Count > 0;
+
+        //    }
+        //    public Guid? Id { get; private set; }
+
+        //    public Guid? ParentId { get; private set; }
+
+        //    public string Name { get; set; }
+        //    public bool HasChildren { get; set; }
+
+
+        //}
+
     }
 }

@@ -1,6 +1,6 @@
 ﻿@model MachineCreateViewModel
 
-<fieldset name="Machine" class="MachineCss">
+<fieldset name="Machine" class="div-machine">
     <legend>@Localizer["Machine"]:</legend>
 
     @Html.HiddenFor(m => m.Machine.Id)
@@ -24,7 +24,16 @@
                     @Html.TextBoxFor(m => m.Machine.Description, new { @class = "form-control" })
                     <span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>
                 </div>
-            </div>           
+            </div>
+
+            @*<div class="form-group">
+                <div class="col-md-3">
+                    <label for="Category" class="control-label">@Localizer["Category"]:</label>
+                </div>
+                <div class="col-md-8">
+                    <input id="dropdowntree" class="form-control" />                   
+                </div>
+            </div>*@
 
             <div class="form-group">
                 <div class="col-md-3">
@@ -92,7 +101,42 @@
 
 </fieldset>
 <style>
-    .MachineCss{
+    .div-machine{
         margin-bottom:50px;
     }
 </style>
+
+@*<script>
+    require(["jquery", "js/hd/FormHelper.js", 'kendo.all.min', "kendo.aspnetmvc.min", "toolkit"], function ($, formHelper) {
+        _formHelper = formHelper;
+
+        var dataCate = new kendo.data.HierarchicalDataSource({
+            transport: {
+                read: {
+                    url: '@Url.Action("GetCategories", "Categories")',
+                    type: "GET",
+                    dataType: "json"
+                }
+            },
+            schema: {
+                model: {
+                    id: "Id",
+                    hasChildren: "HasChildren"
+                }
+            }
+        });
+
+        $("#dropdowntree").kendoDropDownTree({
+            placeholder: "Select ...",
+            checkboxes: {
+                template: "<input type='checkbox' name='checkedFiles[#= item.id #]' value='true' #= item.hasChildren ? 'disabled' :'' #/>"
+            },
+            autoClose: false,
+            dataSource: dataCate,
+            dataTextField: 'Name',
+            dataValueField: 'Id',
+            loadOnDemand: true,  // Chỉ load nút con khi bấm vào nút cha. nếu để false nó sẽ load tất cả các nút con khi bấm vào dropdown
+
+        });
+    })
+</script>*@

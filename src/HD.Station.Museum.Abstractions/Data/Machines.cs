@@ -30,6 +30,7 @@ namespace HD.Station.Museum
         public virtual MachineProduces MachineProduces { get; set; }
 
         public virtual MachineWareHouses MachineWarehouses { get; set; }
+        public virtual IEnumerable<CategoryMachines> CategoryMachines { get; set; }
 
     }
 }
