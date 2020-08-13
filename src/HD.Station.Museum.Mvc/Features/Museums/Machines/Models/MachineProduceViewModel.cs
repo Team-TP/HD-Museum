@@ -27,12 +27,11 @@ namespace HD.Station.Feature.Models
 
         [Hidden]
         public Guid MachineId { get => base.Id; set => base.Id = value; }
+
+        public DateTimeOffset? DateOfManufacture { get; set; }
         [Display]
         [GridDisplay]
-        public DateTimeOffset DateOfManufacture { get; set; }
-        [Display]
-        [GridDisplay]
-        public DateTimeOffset DateTest { get; set; }
+        public DateTimeOffset? DateTest { get; set; }
         [Display]
         [GridDisplay]
         public StateType State { get; set; }

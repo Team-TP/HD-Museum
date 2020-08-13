@@ -24,37 +24,51 @@ namespace HD.Station.Museum.Sqlserver.Stores
             var d = base.Query()
                 .Include(a => a.MachineProduces)
                 .Include(a => a.MachineWarehouses)
+                .Include(a=>a.CategoryMachines)
+                .ThenInclude(a=>a.Category)
                 .Where(a => a.ParentId == null);
             return d;
         }
 
         public async Task<Machines> ReadMachineByIdAsync(Guid id)
         {
-            var d = await DbContext.Set<Machines>().Include(a => a.MachineProduces)
+            var machines = await DbContext.Set<Machines>().Include(a => a.MachineProduces)
                                                     .Include(a => a.MachineWarehouses)
                                                     .Include(a => a.ChildrenMachine)
                                                     .Where(a => a.Id == id)
                                                     .FirstOrDefaultAsync();
-
-
-            return d;
+            var categoriIds = DbContext.Set<CategoryMachines>().Include(a => a.Category).Where(a => a.MachineId == id).Select(a=>a.CategoryId).ToArray();
+            machines.CateIds = categoriIds;
+            return machines;
         }
 
-        //public async Task<Machines> AddAsync(MachineComponentsViewModel model)
-        //{
-        //    await DbContext.Database.BeginTransactionAsync(CancellationToken);
-        //    var machineEntry = await DbContext.AddAsync(model.Machine);
+        public async Task<Machines> AddAsync(MachineComponentsViewModel model)
+        {
+            await DbContext.Database.BeginTransactionAsync(CancellationToken);
+            var machineEntry = await DbContext.AddAsync(model.Machine);
 
-        //    model.MachineProduce.MachineId = machineEntry.Entity.Id;
-        //    await DbContext.AddAsync(model.MachineProduce);
+            if(model.Machine.CateIds != null)
+            {
+                foreach (var category in model.Machine.CateIds)
+                {
+                    await DbContext.AddAsync(new CategoryMachines(machineEntry.Entity.Id, category));
+                }
+            }           
+            if(model.MachineProduce != null)
+            {
+                model.MachineProduce.MachineId = machineEntry.Entity.Id;
+                await DbContext.AddAsync(model.MachineProduce);
+            }          
+            if(model.MachineWareHouse != null)
+            {
+                model.MachineWareHouse.MachineId = machineEntry.Entity.Id;
+                await DbContext.AddAsync(model.MachineWareHouse);
+            }
 
-        //    model.MachineWareHouse.MachineId = machineEntry.Entity.Id;
-        //    await DbContext.AddAsync(model.MachineWareHouse);
-
-        //    await DbContext.SaveChangesAsync(CancellationToken);
-        //    DbContext.Database.CommitTransaction();
-        //    return machineEntry.Entity;
-        //}
+            await DbContext.SaveChangesAsync(CancellationToken);
+            DbContext.Database.CommitTransaction();
+            return machineEntry.Entity;
+        }
 
         public override async Task<OperationResult> DeleteByIdAsync(Guid id)
         {
@@ -64,11 +78,14 @@ namespace HD.Station.Museum.Sqlserver.Stores
                 var machine = await DbContext.Set<Machines>().Include(a => a.MachineProduces)
                                                         .Include(a => a.MachineWarehouses)
                                                         .Include(a => a.ChildrenMachine)
+                                                        .Include(a=>a.CategoryMachines)
                                                         .Where(a => a.Id == id)
                                                         .FirstAsync();
                 var machineChild = DbContext.Set<Machines>().Include(a => a.MachineProduces)
                                                         .Include(a => a.MachineWarehouses)
                                                         .Where(a => a.ParentId == id);
+              
+
                 if(machineChild.Count() > 0)
                 {
                     foreach( var child in machineChild)
@@ -92,6 +109,14 @@ namespace HD.Station.Museum.Sqlserver.Stores
                 {
                     DbContext.Remove(machine.MachineWarehouses);
                 }
+                var categories = DbContext.Set<CategoryMachines>().Where(a => a.MachineId == machine.Id);
+                if(categories.Count() > 0)
+                {
+                    foreach (var cate in categories)
+                    {
+                        DbContext.Remove(cate);
+                    }
+                }
                 DbContext.Remove(machine);
                 await DbContext.SaveChangesAsync(CancellationToken);
                 DbContext.Database.CommitTransaction();
@@ -107,9 +132,23 @@ namespace HD.Station.Museum.Sqlserver.Stores
         {
             try
             {
-
                 await DbContext.Database.BeginTransactionAsync(CancellationToken);
                 var entry = DbContext.Update(model);
+                //if(model.CateIds.Count() > 0)
+                //{
+                //    if  ((DbContext.Set<CategoryMachines>().Include(a => a.Machine).Where(i => i.MachineId == model.Id)).Count() == 0)
+                //    {
+                //        foreach (var category in model.CateIds)
+                //        {
+                //            await DbContext.AddAsync(new CategoryMachines(entry.Entity.Id, category));                     
+                //        }
+                //    }
+                //    else
+                //    {
+                //        DbContext.Update(model.CategoryMachines);
+                //    }
+                //}
+
                 if (model.MachineProduces != null)
                 {
                     if ((DbContext.Set<MachineProduces>().Include(a => a.Machines).Where(i => i.MachineId == model.Id)).Count() == 0)

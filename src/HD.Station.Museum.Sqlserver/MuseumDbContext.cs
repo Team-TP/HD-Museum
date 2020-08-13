@@ -74,6 +74,8 @@ namespace HD.Station.Dashboard.SqlServer
                         .WithOne(b => b.ParentMachine)
                         .HasForeignKey(a => a.ParentId);
 
+                entity.Ignore(c => c.CateIds);
+
             });
             modelBuilder.Entity<CategoryMachines>(entity =>
             {
@@ -86,6 +88,7 @@ namespace HD.Station.Dashboard.SqlServer
                 entity.HasOne(a => a.Machine)
                        .WithMany(b => b.CategoryMachines)
                        .HasForeignKey(a => a.MachineId);
+
             });
             modelBuilder.Entity<MachineProduces>(entity =>
             {

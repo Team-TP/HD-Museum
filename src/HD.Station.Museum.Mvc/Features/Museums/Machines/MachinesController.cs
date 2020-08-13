@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using HD.Station.Security;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
+using System.Reflection.PortableExecutable;
 
 namespace HD.Station.Feature.Mvc
 {
@@ -20,9 +20,10 @@ namespace HD.Station.Feature.Mvc
         private IMachineManager _manager;
         private IMachineProduceManager _pmanager;
         private IMachineWareHouseManager _whmanager;
-        private ICategoryManager _cmanager;
+        private ICategoryMachineManager _cmanager;
 
-        public MachinesController(IMachineManager manager, ICategoryManager cmanager)
+
+        public MachinesController(IMachineManager manager, ICategoryMachineManager cmanager)
         {
             _manager = manager;
             _cmanager = cmanager;
@@ -45,7 +46,7 @@ namespace HD.Station.Feature.Mvc
             try
             {
                 var start = DateTime.Now;
-                var query = (await _manager.QueryAsync()).Select(a => new MachinesViewModel(a));
+                var query = (await _manager.QueryAsync(filterText, includeDisabled)).Select(a => new MachinesViewModel(a));
                 var result = await query.ToDataSourceResultAsync(request);
 
                 return Json(result);
@@ -78,12 +79,20 @@ namespace HD.Station.Feature.Mvc
             return View(model);
         }
         [HttpPost]
-        public virtual async Task<IActionResult> CreateAsync(MachineCreateViewModel model)
+        //[ValidateAntiForgeryToken]
+        public virtual async Task<IActionResult> CreateAsync(MachineComponentsViewModel model)
         {
-            var machine = model.ToModel();
-            var (state, edit) = await _manager.AddAsync(machine);
-            //return RedirectToAction("Details", new { id = edit.Id });
-            return RedirectToAction("Index");
+            //var machine = model.ToModel();
+            var error = ModelState.Values.Select(a => a.Errors);
+            var Mstate = ModelState.IsValid;
+            if (Mstate)
+            {
+                var (state, edit) = await _manager.AddAsync(model);
+                return Json(new { redirectToUrl = Url.Action("Index", "Machines") });
+            }
+            return View(model);
+            
+            //return RedirectToAction("Index");           
         }
         [HttpGet("[area]/[controller]/{id:guid}")]
         public virtual async Task<IActionResult> DetailsAsync(Guid id)
@@ -131,6 +140,16 @@ namespace HD.Station.Feature.Mvc
         {
             ViewData["Layout"] = layout == "_" ? "" : layout;
             var (state, machine) = await _manager.ReadMachineByIdAsync(id);
+
+            //if (machine.CategoryMachines.Count() > 0) // Cách đọc CateIds thứ 2
+            //{
+            //    ViewBag.CateId = machine.CategoryMachines.First().CategoryId;
+            //}
+            //else
+            //{
+            //    ViewBag.CateId = null;
+            //}
+
             if (state.Succeeded)
             {
                 if(machine == null)
@@ -138,15 +157,7 @@ namespace HD.Station.Feature.Mvc
                     return NotFound();
                 }
                 var machines = new MachinesEditViewModel(machine);
-
-                //if (id == Guid.Empty)
-                //{
-                //    machines.ParentId = null;
-                //}
-                //else
-                //{
-                //    machines.ParentId = id;
-                //}
+               
                 var model = new MachineCreateViewModel()
                 {
                     Machine = machines,
@@ -161,10 +172,6 @@ namespace HD.Station.Feature.Mvc
                 return View();
             }
 
-
-            //ViewData["Layout"] = layout == "_" ? "" : layout;
-            //var (state, machine) = await _manager.ReadMachineByIdAsync(id);
-            //return View(new MachinesEditViewModel(machine));
         }
 
         [HttpPost]
@@ -183,42 +190,13 @@ namespace HD.Station.Feature.Mvc
                     Title = "Ok"
                 };
 
-                return RedirectToAction("Index");
+                return Json(new { redirectToUrl = Url.Action("Index", "Machines") });
                 //return RedirectToAction("Details", new { id = dt.Id });
             }
             ViewBag.Notice = result.ToAlert();
             return View(viewItem);
 
         }
-
-        //[HttpGet]
-        //public virtual async Task<IActionResult> GetCategoriesAsync(Guid? id)
-        //{
-
-        //    var data = (await _cmanager.QueryAsync()).Where(c => c.ParentId == id)
-        //        .Select(c => new CategoriesTreeModel(c)).ToList();
-
-        //    return Json(data);
-        //}
-        //public class CategoriesTreeModel
-        //{
-        //    public CategoriesTreeModel(Categories item)
-        //    {
-        //        Id = item.Id;
-        //        ParentId = item.ParentId;
-        //        Name = item.Name;
-        //        HasChildren = item.ChildrenCategory.Count > 0;
-
-        //    }
-        //    public Guid? Id { get; private set; }
-
-        //    public Guid? ParentId { get; private set; }
-
-        //    public string Name { get; set; }
-        //    public bool HasChildren { get; set; }
-
-
-        //}
 
     }
 }

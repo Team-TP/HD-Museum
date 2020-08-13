@@ -110,20 +110,14 @@
         });
 
 
-        //$("#createModal").on('hidden.bs.modal', function (event) {
-        //    //$('.div-machine').remove();
-        //    //$('.div-produce').remove();
-        //    //$('.div-wareHouse').remove();
-        //    $('#machineCreateForm').remote();
-        //    console.log('HIDDEN MODAL EVENT', event);
-        //});
-        //$("#editModal").on('hidden.bs.modal', function (event) {
-        //    //$('.div-machine').remove();
-        //    //$('.div-produce').remove();
-        //    //$('.div-wareHouse').remove();
-        //    $('#machineEditForm').remote();
-        //    console.log('HIDDEN MODAL EVENT', event);
-        //});
+        $("#createModal").on('hidden.bs.modal', function (event) {
+            $('.divmodal').remove();
+            console.log('HIDDEN MODAL EVENT', event);
+        });
+        $("#editModal").on('hidden.bs.modal', function (event) {
+            $('.divmodal').remove();
+            console.log('HIDDEN MODAL EVENT', event);
+        });
 
     })
 </script>
@@ -181,7 +175,7 @@
 </div>
 
 @section navigation {
-        <a asp-action="Create" icon-name="action-create" data-toggle="modal" data-targ et="#createModal" asp-route-id="" class="btn btn-primary-outline">
+        <a icon-name="action-create" data-toggle="modal" data-target="#createModal" asp-route-id="" class="btn btn-primary-outline">
             @Localizer["CreateChild"]
         </a>
         <a asp-action="Index" asp-route-id="" icon-name="action-back" class="btn btn-default-outline">

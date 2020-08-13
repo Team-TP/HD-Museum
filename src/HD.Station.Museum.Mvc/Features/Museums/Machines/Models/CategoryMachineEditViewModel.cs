@@ -25,11 +25,12 @@ namespace HD.Station.Feature.Models
 
         [Hidden]
         public override Guid Id { get => base.Id; set => base.Id = value; }
-        [Hidden]
-        public Guid? MachineId { get; set; }
-        [Hidden]
-        public Guid? CategoryId { get; set; }
-
+        [Display]
+        [GridDisplay]
+        public Guid MachineId { get; set; }
+        [Display]
+        [GridDisplay]
+        public Guid CategoryId { get; set; }
 
         public override CategoryMachines ToModel()
         {
@@ -37,8 +38,8 @@ namespace HD.Station.Feature.Models
             {
                 Id = Id,
                 MachineId = MachineId,
-                CategoryId = CategoryId
-            };
+                CategoryId = CategoryId,
+        };
             return categoryMachines;
         }
     }

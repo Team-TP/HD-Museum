@@ -35,9 +35,13 @@ namespace HD.Station.Feature.Models
         public string Note { get; set; }
         [Display]
         [GridDisplay]
+        [Required]
+        //[RegularExpression(@"[0-9]{10}")]
+        [StringLength(10,ErrorMessage = "Số điện thoại phải là 10 số", MinimumLength = 10)]
         public string Phone { get; set; }
         [Display]
         [GridDisplay]
+        [Required]
         public string Email { get; set; }
 
 

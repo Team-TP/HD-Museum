@@ -20,8 +20,6 @@ namespace HD.Station.Museum
         public int Amount { get; set; }
         public decimal Price { get; set; }
 
-        //public ICollection<CategoryMachines> CategoryMachine { get; set; }
-
         [JsonIgnore]
         public Machines ParentMachine { get; set; }
         [JsonIgnore]
@@ -30,6 +28,7 @@ namespace HD.Station.Museum
         public virtual MachineProduces MachineProduces { get; set; }
 
         public virtual MachineWareHouses MachineWarehouses { get; set; }
+        public IEnumerable<Guid> CateIds { get; set; }
         public virtual IEnumerable<CategoryMachines> CategoryMachines { get; set; }
 
     }

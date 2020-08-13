@@ -32,27 +32,27 @@
                 } }
             else
             {
-<div class="container">
+<div class="container divmodal">
     <div class="row form-group">
         <div class="col-md-8 col-md-offset-1 setup-panel">
             <div class="stepwizard-step">
                 <ul class="nav nav-pills nav-justified thumbnail setup-panel">
                     <li class="active">
-                        <a href="#step-1">
+                        <a href="#step1" data-toggle="tab">
                             <p class="number">1</p>
                             <h4 class="list-group-item-heading">Machine</h4>
                             @* <h4 class="list-group-item-text">@Localizer["Machine"]</h4>*@
                         </a>
                     </li>
-                    <li class="disable">
-                        <a href="#step-2">
+                    <li>
+                        <a href="#step2" data-toggle="tab">
                             <p class="number">2</p>
                             <h4 class="list-group-item-heading">Machine Produce</h4>
                             @*<h4 class="list-group-item-text">@Localizer["Machine Produce"]</h4>*@
                         </a>
                     </li>
-                    <li class="disable">
-                        <a href="#step-3">
+                    <li>
+                        <a href="#step3" data-toggle="tab">
                             <p class="number">3</p>
                             <h4 class="list-group-item-heading">Machine WareHouse</h4>
                             @*<h4 class="list-group-item-text">@Localizer["Machine WareHouse"]</h4>*@
@@ -65,20 +65,16 @@
 
     <form id="machineEditForm" name="Edit" asp-action="Edit" class="form-horizontal">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="setup-content active" id="step-1">
-            <div class="">
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="step1">
                 @{await Html.RenderPartialAsync("_CreateEditMachinePartial", Model);}
             </div>
-        </div>
 
-        <div class="setup-content" id="step-2">
-            <div class="">
+            <div class="tab-pane fade" id="step2">
                 @{await Html.RenderPartialAsync("_CreateEditMachineProducePartial", Model);}
             </div>
-        </div>
 
-        <div class="setup-content" id="step-3">
-            <div class="">
+            <div class="tab-pane fade" id="step3">
                 @{await Html.RenderPartialAsync("_CreateEditMachineWareHousePartial", Model);}
             </div>
         </div>
@@ -138,91 +134,106 @@
         <button icon-name="action-cancel" name="close" class="btn btn-default" data-dismiss="modal">
             @Localizer["Close"]
         </button>
-        <button id="prevBtn" icon-name="" class="btn btn-info prevBtn" style="background-color: #5bc0de; border:none">
-            @Localizer["Prev"]
-        </button>
-        <button id="nextBtn" icon-name="" class="btn btn-info nextBtn" style="background-color: #f44336; border: none">
-            @Localizer["Next"]
-        </button>
 
-        <button name="SubmitCreate" icon-name="action-save" form="machineEditForm" class="btn btn-success" type="submit" id="createBtn">
+        <button name="SubmitCreate" icon-name="action-save" class="btn btn-success" type="submit" id="editBtn">
             @Localizer["Save"]
         </button>
     </div>
 }
 <script>
+    require(["jquery", "js/hd/FormHelper.js", 'kendo.all.min', "kendo.aspnetmvc.min", "toolkit"], function ($, formHelper) {
+        _formHelper = formHelper;
 
-    $(document).ready(function () {
-        var indexnext = 1;
-        var indexprev = 3;
-
-        $('#createBtn').css('display', 'none');
-
-        var allWells = $('.setup-content'),
-            allNextBtn = $('.nextBtn'),
-            allPrevBtn = $('.prevBtn');
-
-        allWells.hide();
-
-
-        $('#nextBtn').click(function () {
-            console.log("click next");
-            $('a[href="#step-' + indexnext + '"]').trigger('click');
-
-        });
-        $('a[href="#step-1"').click(function () {
-            indexnext = 2;
-            indexprev = 3;
-            $('#prevBtn').css('display', 'none');
-        })
-        $('a[href="#step-2"').click(function () {
-            $('#prevBtn').css('display', 'inline-block');
-            $('#nextBtn').css('display', 'inline-block');
-            $('#createBtn').css('display', 'inline-block');
-            indexnext = 3;
-            indexprev = 1;
-        })
-        $('a[href="#step-3"').click(function () {
-            $('#prevBtn').css('display', 'inline-block');
-            $('#nextBtn').css('display', 'inline-block');
-            indexnext = 1;
-            indexprev = 2;
-            $('#createBtn').css('display', 'inline-block');
-        })
-
-
-        $('#prevBtn').click(function () {
-            console.log("click next");
-            $('a[href="#step-' + indexprev + '"]').trigger('click');
-
-        });
-
-
-
-    });
-
-    jQuery(document).ready(function () {
-
-        var navListItems = $('ul.setup-panel li a'),
-            allWells = $('.setup-content');
-
-        allWells.hide();
-
-        navListItems.click(function (e) {
-            e.preventDefault();
-            var $target = $($(this).attr('href')),
-                $item = $(this).closest('li');
-
-            if (!$item.hasClass('disabled')) {
-                navListItems.closest('li').removeClass('active');
-                $item.addClass('active');
-                allWells.hide();
-                $target.show();
+        var dataCate = new kendo.data.HierarchicalDataSource({
+            transport: {
+                read: {
+                    url: '@Url.Action("GetCategories", "Categories")',
+                    type: "GET",
+                    dataType: "json"
+                }
+            },
+            schema: {
+                model: {
+                    id: "Id",
+                    hasChildren: "HasChildren"
+                }
             }
         });
 
-        $('ul.setup-panel li.active a').trigger('click');
+        @*var category = '@ViewBag.CateId'; //cách 2 lấy id bằng Viewbag*@
+        var category;
+        if ('@Model.Machine.CateIds' == null) {
+            category = null;
+        }
+        else {
+            category = '@Model.Machine.CateIds.First()';
+        }
 
+        console.log("category: ", category);
+        debugger
+        $("#dropdowntree").kendoDropDownTree({
+            placeholder: "Select ...",
+            checkboxes: {
+                template: "<input type='checkbox' name='checkedFiles[#= item.id #]' value='true' #= item.hasChildren ? 'disabled' :'' #/>"
+            },
+            autoClose: false,
+            dataSource: dataCate,
+            dataTextField: 'Name',
+            dataValueField: 'Id',
+            loadOnDemand: false,  // Chỉ load nút con khi bấm vào nút cha. nếu để false nó sẽ load tất cả các nút con khi bấm vào dropdown
+            value: category,
+        });
 
+        var form = $('#machineEditForm');
+        form.removeData("validator")    // Added by jQuery Validate\
+            .removeData("unobtrusiveValidation");   // Added by jQuery Unobtrusive Validation
+        $.validator.unobtrusive.parse(form);
+        console.log('validated');
+
+        $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+            //e.target // newly activated tab
+            //e.relatedTarget // previous active tab
+
+            if (e.relatedTarget) {
+                var lastTabHref = $(e.relatedTarget).attr("href");
+                var lastForm = $(`${lastTabHref}, form`);
+                console.log("Try to validate last form", e, lastTabHref, lastForm);
+
+                if (lastForm.length && !lastForm.valid()) {
+                    console.log("Last form is invalid");
+                    e.preventDefault();
+                    return;
+                }
+            }
+
+            var required = $(e.target).data("required");
+            console.log('required:', required);
+        });
     });
-</script>}
+
+    $('#editBtn').click(function (e) {
+        var machines = _formHelper.serializeObject('#machineEditForm');
+        console.log("Machines: ", machines);
+
+        var dropdowntree = $('#dropdowntree').data('kendoDropDownTree');
+        var categoryId = dropdowntree.value();
+        //var dDTreeItems = JSON.parse(JSON.stringify(multiselect.value()));
+        console.log("CategoryId: ", categoryId);
+        machines.Machine.CateIds = categoryId;
+        console.log("model.Machine.CateIds", machines.Machine.CateIds);
+        debugger
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Edit")',
+            data: { viewItem: machines },
+            success: function (data) {
+                window.location.href = data.redirectToUrl;
+                console.log('susseeded....');
+                console.log("Data: ", data);
+
+            }
+        });
+    });
+</script>
+}

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
 
@@ -25,6 +26,16 @@ namespace HD.Station.Feature.Models
                 Stage = machines.Stage;
                 Amount = machines.Amount;
                 Price = machines.Price;
+                if (machines.CateIds.Count() > 0)
+                {
+                    CateIds = machines.CateIds;
+                }
+                else
+                {
+                    CateIds = null;
+                }
+                /*CateIds = machines.CategoryMachines.Select(a => a.CategoryId).ToArray();*/ // cách 1 để đọc categoriId
+                CategoryMachines = machines.CategoryMachines;
                 //MachineProduce = machines.MachineProduces;
                 //MachineWarehouse = machines.MachineWarehouses;
                 if (machines.MachineProduces != null) { MachineProduce = new MachineProduceEditViewModel(machines.MachineProduces); }
@@ -34,7 +45,7 @@ namespace HD.Station.Feature.Models
 
         [Hidden]
         public override Guid Id { get => base.Id; set => base.Id = value; }
-
+        [Required]       
         [Display]
         [GridDisplay]
         public string Name { get; set; }
@@ -55,6 +66,9 @@ namespace HD.Station.Feature.Models
         [Display]
         [GridDisplay]
         public decimal Price { get; set; }
+        [GridDisplay]
+        [Display]       
+        public IEnumerable<Guid> CateIds { get; set; }
 
         //public MachineProduces MachineProduce { get; set; }
 
@@ -63,6 +77,8 @@ namespace HD.Station.Feature.Models
         public MachineProduceEditViewModel MachineProduce { get; set; }
 
         public MachineWareHouseEditViewModel MachineWarehouse { get; set; }
+        public virtual IEnumerable<CategoryMachines> CategoryMachines { get; set; }
+
 
 
         public override Machines ToModel()
@@ -77,6 +93,7 @@ namespace HD.Station.Feature.Models
                 Stage = Stage,
                 Amount = Amount,
                 Price = Price,
+                CateIds = CateIds,
                 MachineProduces = MachineProduce?.ToModel(),
                 MachineWarehouses = MachineWarehouse?.ToModel()
             };

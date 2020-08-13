@@ -22,22 +22,22 @@
                 </div>
                 <ul class="nav nav-pills nav-stacked">
                     <li class="nav-header">@Localizer["Asset management"]</li>
-                    <li asp-controller="AssetFilterProfile">
-                        <a asp-controller="AssetFilterProfile" asp-action="Index" asp-route-id="">
+                    <li>
+                        <a asp-controller="Machines" asp-action="Index" asp-route-id="">
                             <span class="icon"></span>
-                            @Localizer["Asset Filter Profile"]
+                            @Localizer["Machine"]
                         </a>
                     </li>
-                    <li asp-controller="AssetType">
-                        <a asp-controller="AssetType" asp-action="Index" asp-route-id="">
+                    <li>
+                        <a asp-controller="Categories" asp-action="Index" asp-route-id="">
                             <span class="icon"></span>
-                            @Localizer["Asset Type"]
+                            @Localizer["Categories"]
                         </a>
                     </li>
-                    <li asp-controller="MimeType">
-                        <a asp-controller="MimeType" asp-action="Index" asp-route-id="">
+                    <li>
+                        <a asp-controller="Enrollments" asp-action="Index" asp-route-id="">
                             <span class="icon"></span>
-                            @Localizer["Mime Type"]
+                            @Localizer["Enrollments"]
                         </a>
                     </li>
                     <li class="nav-header">@Localizer["Storage management"]</li>

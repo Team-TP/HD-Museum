@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection.PortableExecutable;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace HD.Station.Feature.Models
@@ -25,10 +26,11 @@ namespace HD.Station.Feature.Models
                 Stage = machines.Stage;
                 Amount = machines.Amount;
                 Price = machines.Price;
+                CateIds = machines.CateIds;
                 ChildMachines = machines.ChildrenMachine;
-
                 MachineProduce = new MachineProduceViewModel(machines.MachineProduces);
                 MachineWareHouse = new MachineWareHouseViewModel(machines.MachineWarehouses);
+
                 //if (machines.MachineProduces != null) { MachineProduce = new MachineProduceEditViewModel(machines.MachineProduces); }
                 //if (machines.MachineWarehouses != null) { MachineWareHouse = MachineProduce }
 
@@ -59,13 +61,18 @@ namespace HD.Station.Feature.Models
         [GridDisplay]
         public decimal Price { get; set; }
 
-        [Display]
-        [GridDisplay]
-        public DateTimeOffset DateOfManufacture => MachineProduce.DateOfManufacture;
-
+        
+        [Display(Name = "Date Of Manufacture")]
+        [GridDisplay(Title = "Date Of Manufacture")]
+        public string DateOfManufactureString => MachineProduce?.DateOfManufacture?.ToString("HH:mm dd/MM/yyyy");
+        //public DateTimeOffset DateOfManufacture => MachineProduce.DateOfManufacture;
         [Display]
         [GridDisplay]
         public string Address => MachineWareHouse.Address;
+        [Display]
+        [GridDisplay]
+        public string Phone => MachineWareHouse.Phone;
+        public IEnumerable<Guid> CateIds { get; set; }
 
 
         //public MachineProduces MachineProduce { get; set; }
@@ -87,6 +94,8 @@ namespace HD.Station.Feature.Models
                 Stage = Stage,
                 Amount = Amount,
                 Price = Price,
+                CateIds = CateIds,
+
         };
             return machines;
         }

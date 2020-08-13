@@ -12,9 +12,10 @@ namespace HD.Station.Feature.Models
         public MachineWareHouseEditViewModel MachineWareHouse { get; set; }
 
 
-        //public MachineCreateViewModel(Machines model) 
-        //{ 
-        //    if(model != null)
+
+        //public MachineCreateViewModel(Machines model)
+        //{
+        //    if (model != null)
         //    {
         //        Machine = new MachinesEditViewModel(model);
         //        //Machine.Id = model.Id;
@@ -41,8 +42,9 @@ namespace HD.Station.Feature.Models
                 Stage = Machine.Stage,
                 Amount = Machine.Amount,
                 Price = Machine.Price,
+                CateIds = Machine.CateIds,
                 MachineProduces = MachineProduce?.ToModel(),
-                MachineWarehouses = MachineWareHouse?.ToModel()
+                MachineWarehouses = MachineWareHouse?.ToModel(),
             };
         }
 

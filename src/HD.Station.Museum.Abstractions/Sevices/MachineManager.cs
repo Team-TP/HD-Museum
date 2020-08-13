@@ -3,6 +3,7 @@ using HD.Station.Security;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,22 +26,22 @@ namespace HD.Station.Museum.Sevices
             var authorizeResult = await AuthorizeAsync(model, requirement);
             return (authorizeResult, model);
         }
-        //public async Task<(OperationResult State, Machines Edit)> AddAsync(MachineComponentsViewModel model)
-        //{
-        //    try
-        //    {
-        //        var authResult = await AuthorizeAsync(model.Machine, Operations.Create);
-        //        if (!authResult.Succeeded)
-        //        {
-        //            return (authResult, null);
-        //        }
-        //        return (OperationResult.Success, await _store.AddAsync(model));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return (OperationResult.Failed(ex), null);
-        //    }
-        //}
+        public async Task<(OperationResult State, Machines Edit)> AddAsync(MachineComponentsViewModel model)
+        {
+            try
+            {
+                var authResult = await AuthorizeAsync(model.Machine, Operations.Create);
+                if (!authResult.Succeeded)
+                {
+                    return (authResult, null);
+                }
+                return (OperationResult.Success, await _store.AddAsync(model));
+            }
+            catch (Exception ex)
+            {
+                return (OperationResult.Failed(ex), null);
+            }
+        }
         public override async Task<OperationResult> UpdateAsync(Machines model)
         {
             try
@@ -76,5 +77,9 @@ namespace HD.Station.Museum.Sevices
             }
         }
 
+        //public virtual Task<IQueryable<Machines>> QueryAsync(string filterText = null, bool includeDisabled = false)
+        //{
+        //    var data = 
+        //}
     }
 }

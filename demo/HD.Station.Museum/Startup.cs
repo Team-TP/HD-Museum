@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using System.Globalization;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace HD.Station.Startup
 {

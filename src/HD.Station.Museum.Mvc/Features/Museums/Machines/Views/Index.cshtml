@@ -162,7 +162,6 @@
             var button = $(event.relatedTarget); // Button that triggered the modal
             var parentId = button.attr('data-parentId');
             console.log("ParentId:", parentId);
-            debugger
             var that = this;
             $(document).off('focusin.modal')  // trường hợp dropdown tự đóng lại khi thêm filter
 
@@ -199,18 +198,18 @@
         });
 
 
-        //$("#createModal").on('hidden.bs.modal', function (event) {
-        //    $('.div-machine').remove();
-        //    $('.div-produce').remove();
-        //    $('.div-wareHouse').remove();
-        //    console.log('HIDDEN MODAL EVENT', event);
-        //});
-        //$("#editModal").on('hidden.bs.modal', function (event) {
-        //    $('.div-machine').remove();
-        //    $('.div-produce').remove();
-        //    $('.div-wareHouse').remove();
-        //    console.log('HIDDEN MODAL EVENT', event);
-        //});
+        $("#createModal").on('hidden.bs.modal', function (event) {
+            $('.divmodal').remove();
+            //$('.dproduce').remove();
+            //$('.dwareHouse').remove();
+            console.log('HIDDEN MODAL EVENT', event);
+        });
+        $("#editModal").on('hidden.bs.modal', function (event) {
+            $('.divmodal').remove();
+            //$('.dproduce').remove();
+            //$('.dwareHouse').remove();
+            console.log('HIDDEN MODAL EVENT', event);
+        });
 
     })
 </script>

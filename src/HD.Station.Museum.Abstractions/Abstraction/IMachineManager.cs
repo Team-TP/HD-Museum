@@ -9,6 +9,6 @@ namespace HD.Station.Museum
     {
         Task<(OperationResult State, Machines ViewItem)> ReadMachineByIdAsync(Guid id, OperationAuthorizationRequirement requirement = null);
 
-        //Task<(OperationResult State, Machines Edit)> AddAsync(MachineComponentsViewModel model);
+        Task<(OperationResult State, Machines Edit)> AddAsync(MachineComponentsViewModel model);
     }
 }
